@@ -1,0 +1,58 @@
+html {
+    font-family: 'Roboto', sans-serif;
+}
+body {
+    width: 100%;
+    text-align: center;
+}
+div.buttonContainer {
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    display: inline-block;
+}
+div.colourButton {
+    width: 200px;
+    display: block;
+    height: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    text-decoration: none;
+    border-color: #000;
+    border-style: solid;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.red {
+    background-color: rgb(255,0,0);
+}
+.green {
+    background-color: rgb(0,255,0);
+}
+.blue {
+    background-color: rgb(0,0,255);
+}
+.black {
+    background-color: rgb(255,255,255);
+}
+p.colourText {
+    font-size: 26px;
+    margin: 8px;
+    text-align: center;
+    font-weight: bold;
+    color: #000;
+}
+input.authInput {
+    font-size: 26px;
+    font-weight: bold;
+    width: 150px;
+    text-align: center;
+}
+input.authInput:focused {
+    border-color: inherit;
+}
+.no-spin::-webkit-inner-spin-button, .no-spin::-webkit-outer-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+    -moz-appearance:textfield !important;
+}

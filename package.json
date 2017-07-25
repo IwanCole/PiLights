@@ -1,0 +1,19 @@
+{
+  "name": "pilights",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "connect": "^2.7.8",
+    "express": "^4.15.3",
+    "js-cookie": "^2.1.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Iwan Cole",
+  "license": "ISC"
+}

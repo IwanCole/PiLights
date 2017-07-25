@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pi Lights</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="stylesheet.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="js.cookie.js"></script>
+        <script async src="script.js"></script>
+    </head>
+    <body>
+        <h1>Select a colour:</h1>
+        
+        <form>
+<!--            <input type="number" name="auth" class="authInput no-spin" maxlength="4">-->
+            <input type="number" name="auth" class="authInput no-spin" oninput="passcode_intent()" placeholder="Passcode">
+        </form>
+        
+        <div class="buttonContainer">
+            <div class="colourButton red" href="#"><p class="colourText">Red</p></div>
+            <div class="colourButton green" href="#"><p class="colourText">Green</p></div>
+            <div class="colourButton blue" href="#"><p class="colourText">Blue</p></div>
+            <div class="colourButton black" href="#"><p class="colourText">Off</p></div>
+        </div>
+    </body>
+</html>
