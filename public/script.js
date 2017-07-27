@@ -42,6 +42,16 @@ var main = function() {
                 } 
             });
     });
+    
+    $(".colourContainer").click(function () {
+        $(".fullPageCover").fadeToggle(400);
+        $(".detailedColours").fadeToggle(400);
+    });
+    $(".fullPageCover").click(function () {
+        $(".detailedColours").fadeToggle(400);
+        $(".fullPageCover").fadeToggle(400); 
+    });
+    
 };
 
 $(document).ready(main);
