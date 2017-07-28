@@ -1,7 +1,13 @@
 html {
     font-family: 'Roboto', sans-serif;
+    background-color: #3e3e3e;
 }
-
+/*~~~~~~ ALL FONT FAMILIES HERE ~~~~~~*/
+.lockTitle, .title, .subTitle {
+/*    font-family: 'Roboto:100', sans-serif;*/
+    font-weight: 200;
+}
+/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 body {
     width: 100%;
     margin: 0;
@@ -22,13 +28,12 @@ button:focus {
 
 h1.lockTitle {
     color: #fff;
-    margin-top:120px;
+    margin-top:90px;
     font-size: 58px;
 }
 input.authInput {
     color: #303030;
     font-size: 42px;
-    font-weight: bold;
     width: 220px;
     border: none;
     box-shadow: none;
@@ -46,7 +51,31 @@ i.lock {
 }
 .content {
     display: none;
+    background-color: #3e3e3e;
 }
+.titleBar {
+    background-color: #2a2a2a;
+    padding: 15px 0px 15px 0px;
+    display: block;
+    bottom: 0px;
+    width: 100%;
+    position: fixed;
+}
+.title {
+    margin: 0px;
+    font-size: 24px;
+    font-weight: bold;
+}
+.title, .subTitle {
+    color: #fff;
+}
+.subTitle {
+    width: 75%;
+    font-size: 26px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 div.buttonContainer {
     margin-left: auto;
     margin-right: auto;
@@ -65,18 +94,7 @@ div.colourButton {
     border-radius: 10px;
     cursor: pointer;
 }
-.red {
-    background-color: rgb(255,0,0);
-}
-.green {
-    background-color: rgb(0,255,0);
-}
-.blue {
-    background-color: rgb(0,0,255);
-}
-.black {
-    background-color: rgb(255,255,255);
-}
+
 p.colourText {
     font-size: 26px;
     margin: 8px;
@@ -89,23 +107,33 @@ span {
     height: 90px;
     display: block;
 }
-.bigColourContainer {
+.colourContainer {
     margin-left: auto;
     margin-right: auto;
-    width: 300px;
+    align-content: center;
+    width: 360px;
     display: inline-block;
 /*    overflow: auto;*/
 }
+.colourOpt {
+    width: 90px;
+    height: 90px;
+    margin: 13px;
+    border-radius: 45px;
+    display: inline-block;
+    background-color: #fff;
+}
+
+/*
 .colourContainer {
     width:90px;
     height 90px;
-/*    border-color: #000;*/
     background-color: green;
-/*    border-style: solid;*/
     border-radius: 8px;
     cursor: pointer;
     display: inline-block;
 }
+*/
 .detailedColours {
     margin-left: auto;
     margin-right: auto;
@@ -140,6 +168,35 @@ span {
     display: none;
     left: 0px;
     overflow: auto;
+}
+
+/*~~~~~~~~ ALL COLOUR DEFS ~~~~~~~~*/
+.red {
+    background-color: #ff2919;
+}
+.pink {
+    background-color: #E91E63;
+}
+.purple {
+    background-color: #D500F9;
+}
+.blue {
+   background-color: #304FFE;
+}
+.lblue {
+    background-color: #00B0FF;
+}
+.cyan {
+    background-color: #00E5FF;
+}
+.green {
+    background-color: #48d64e;
+}
+.yellow {
+    background-color: #FFEB3B;
+}
+.orange {
+    background-color: #FF9100;
 }
 
 
