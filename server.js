@@ -69,9 +69,21 @@ app.post('/', function (req, res) {
         
     }
     else if (type == "intent_colour") {
-        console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
-        var colourSelected = req.body.colour;
-        var response = '{"type":"intent","colour":"' + colourSelected + '"}';    
+        var valid = false;
+        UIDs_Auth.forEach(function(value){
+            if (value == req.body.id) { valid = true; }
+        });
+        if (valid == true) {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
+            var colourSelected = req.body.colour;
+            var response = '{"type":"intent","success":"' + valid + '","colour":"' + colourSelected + '"}';
+            
+        }
+        else {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: BAD AUTH");
+            var response = '{"type":"intent","success":"false"}';
+        }
+           
     }
     
     res.send(response);

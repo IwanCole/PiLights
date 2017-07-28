@@ -2,9 +2,29 @@ var create_colours = function() {
     var i = 0;
     var colours = ["red", "pink", "purple", "blue", "lblue", "cyan", "green", "yellow", "orange"];
     while (i < 9) {
-        $(".colourContainer").append('<div class="colourOpt ' + colours[i] + '"><span></span></div>');
+        $(".colourContainer").append('<div class="colourOpt ' + colours[i] + '"></div>');
         i = i + 1;
     }
+};
+
+var colour_intent = function() {
+     $(".colourOpt").click(function () {
+        var colourRequest = $(this).attr('class').replace("colourOpt ", "");
+        $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },
+            function(data, status){
+                var obj = jQuery.parseJSON(data);
+                alert(status);
+                
+//                console.log("Server replied: " + obj.colour);            
+//                if (obj.colour != "black") {
+//                    $("body").css("background-color", obj.colour);    
+//                }
+//                else {
+//                    $("body").css("background-color", "#fff");
+//                } 
+            });
+    }); 
+    
 };
 
 var passcode_intent = function() {
@@ -49,6 +69,7 @@ var main = function() {
     
     get_uid();
     create_colours();
+    colour_intent();
     $(".colourButton").click(function () {
         var colourRequest = $(this).attr('class').replace("colourButton ", "");
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },

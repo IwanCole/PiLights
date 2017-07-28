@@ -122,6 +122,7 @@ span {
     border-radius: 45px;
     display: inline-block;
     background-color: #fff;
+    cursor: pointer;
 }
 
 /*
