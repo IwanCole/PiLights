@@ -7,6 +7,7 @@ var ip = require('ip');
 var path  = require('path');
 var crypto = require('crypto');
 var express = require('express');
+var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 
 var UIDs = [0];
@@ -19,6 +20,35 @@ app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       extended: true
 })); 
+
+
+
+
+var python_intent = function(colour) {
+    var pyHandler = spawn("python", ["pixel_handler.py"]);  
+    var pyOutput = "";
+    
+    pyHandler.stdout.on("data", function(data) {
+        pyOutput += data.toString();
+    });
+    
+    pyHandler.stdout.on("end", function() {
+        console.log("[ADMIN] PyHandler res: " + pyOutput);
+    });
+    
+    pyHandler.stdin.write(JSON.stringify(colour));
+    pyHandler.stdin.end();
+    
+};
+
+
+
+
+
+
+
+
+
 
 
 // Simple hash, not used for security
@@ -35,7 +65,6 @@ var valid_pass = function(user) {
     else {
         return false;
     }
-    
 }
 
 var server_sweep = function() {
@@ -77,13 +106,12 @@ app.post('/', function (req, res) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
             var response = '{"type":"intent","success":"' + valid + '","colour":"' + colourSelected + '"}';
-            
+            python_intent(req.body.colour);
         }
         else {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
-           
     }
     
     res.send(response);
