@@ -3,6 +3,7 @@ console.log('\n\n--- Node Version: ' + process.version + ' ---');
 //var http = require('http');
 //var url = require('url');
 //var fs = require('fs');
+var ip = require('ip');
 var path  = require('path');
 var crypto = require('crypto');
 var express = require('express');
@@ -80,5 +81,6 @@ app.post('/', function (req, res) {
 setInterval(server_sweep, 10000);
 
 app.listen(8080, function() {
+    console.log('Running on LAN ' + ip.address());
     console.log('Express HTTP server listening on port 8080');
 });

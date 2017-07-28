@@ -5,9 +5,15 @@ var passcode_intent = function() {
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_auth", passcode: passcode },
         function(data, status){
             var obj = jQuery.parseJSON(data);
-            console.log(obj.success)
-            $(".authInput").val("");
-            $(".authInput").prop('disabled', false);
+            console.log(obj.success);
+            if(obj.success == "true") {
+                $(".lockScreen").slideUp();
+                $(".content").delay(400).fadeIn();
+            }
+            else {
+               $(".authInput").val("");
+                $(".authInput").prop('disabled', false); 
+            }            
         });
 
     }
