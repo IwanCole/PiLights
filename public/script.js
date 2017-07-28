@@ -7,14 +7,20 @@ var create_colours = function() {
     }
 };
 
+var update_colours = function(colour) {
+    var newClassName = "titleBar " + colour;
+    $(".titleBar").attr('class', newClassName);
+};
+
 var colour_intent = function() {
      $(".colourOpt").click(function () {
         var colourRequest = $(this).attr('class').replace("colourOpt ", "");
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },
             function(data, status){
                 var obj = jQuery.parseJSON(data);
-                alert(status);
-                
+                if (obj.success == "true") {
+                    update_colours(obj.colour);
+                }
 //                console.log("Server replied: " + obj.colour);            
 //                if (obj.colour != "black") {
 //                    $("body").css("background-color", obj.colour);    

@@ -199,7 +199,17 @@ span {
 .orange {
     background-color: #FF9100;
 }
-
+/* For the LEDs
+Red	ff0000
+Pink	ff00aa
+Purple	aa00ff
+Blue	0000ff
+L Blue	00aaff
+Cyan	00ffff
+Green	00ff00
+Yellow	ffff00
+Orange	ffaa00
+*/
 
 /*~~~~~~~~~~~ ALL ANIMATIONS ~~~~~~~~~~~*/
 @-webkit-keyframes authBad {
