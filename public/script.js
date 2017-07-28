@@ -1,5 +1,7 @@
 var passcode_intent = function() {
     if ($(".authInput").val().length == 4) {
+        $(".lockTitle").removeClass("animate_authBad");
+        $(".lock").removeClass("animate_authBad");
         $(".authInput").prop('disabled', true);
         var passcode = $(".authInput").val();
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_auth", passcode: passcode },
@@ -9,9 +11,13 @@ var passcode_intent = function() {
             if(obj.success == "true") {
                 $(".lockScreen").slideUp();
                 $(".content").delay(400).fadeIn();
+                $('meta[name=theme-color]').remove();
+                $('head').append('<meta name="theme-color" content="#EEEEEE">');
             }
             else {
-               $(".authInput").val("");
+                $(".lockTitle").addClass("animate_authBad");
+                $(".lock").addClass("animate_authBad");
+                $(".authInput").val("");
                 $(".authInput").prop('disabled', false); 
             }            
         });

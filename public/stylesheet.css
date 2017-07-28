@@ -22,12 +22,12 @@ button:focus {
 
 h1.lockTitle {
     color: #fff;
-    margin-top:150px;
-    font-size: 72px;
+    margin-top:120px;
+    font-size: 58px;
 }
 input.authInput {
     color: #303030;
-    font-size: 52px;
+    font-size: 42px;
     font-weight: bold;
     width: 220px;
     border: none;
@@ -42,7 +42,7 @@ input.authInput {
 i.lock {
     margin-top: 70px;
     color: #fff;
-    font-size: 68px;
+    font-size: 54px;
 }
 .content {
     display: none;
@@ -141,3 +141,27 @@ span {
     left: 0px;
     overflow: auto;
 }
+
+
+/*~~~~~~~~~~~ ALL ANIMATIONS ~~~~~~~~~~~*/
+@-webkit-keyframes authBad {
+    0% {
+        color: #fff;
+    }
+    40% {
+        color: #ff5555;
+    }
+    60% {
+        color: #ff5555;
+    }
+    100% {
+        color: #fff;
+    }
+}
+    
+.animate_authBad {
+    -webkit-animation-name: authBad;
+    -webkit-animation-duration: 700ms;
+    -webkit-animation-iteration-count: 1;
+    -webkit-animation-timing-function: ease-in-out;
+}  
