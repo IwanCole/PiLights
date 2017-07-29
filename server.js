@@ -1,8 +1,5 @@
 console.log('\n\n--- Node Version: ' + process.version + ' ---');
 
-//var http = require('http');
-//var url = require('url');
-//var fs = require('fs');
 var ip = require('ip');
 var path  = require('path');
 var crypto = require('crypto');
@@ -21,9 +18,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       extended: true
 })); 
 
-
-
-
+// Basic python spawner, needs LOTS of work
 var python_intent = function(colour) {
     var pyHandler = spawn("python", ["pixel_handler.py"]);  
     var pyOutput = "";
@@ -33,7 +28,7 @@ var python_intent = function(colour) {
     });
     
     pyHandler.stdout.on("end", function() {
-        console.log("[ADMIN] PyHandler res: " + pyOutput);
+        console.log("[SERVR] PyHandler res: " + pyOutput);
     });
     
     pyHandler.stdin.write(JSON.stringify(colour));
@@ -42,33 +37,32 @@ var python_intent = function(colour) {
 };
 
 
-
-
-
-
-
-
-
-
-
-// Simple hash, not used for security
+// Simple hash, not used for security, used to track clients
 var make_hash = function(input) {
     var shasum = crypto.createHash('sha1');
     shasum.update(input.toString());
     return shasum.digest('hex');
 };
 
+// I know this isn't secure but the only reason I have a weak passcode
+// is to stop flatmates on the same wifi from having access
 var valid_pass = function(user) {
-    if (user == "6d492170753211fcde587882d77e1e8dcce1bc27") {
-        return true;
-    }
-    else {
-        return false;
-    }
+    if (user == "6d492170753211fcde587882d77e1e8dcce1bc27") { return true; }
+    else { return false; }
 }
 
+// Validate incoming intent from client
+var valid_intent = function(UID) {
+    var valid = false;
+    UIDs_Auth.forEach(function(value){
+        if (value == UID) { valid = true; }
+    });
+    return valid;
+};
+
+// Periodically print the currently authenticated clients
 var server_sweep = function() {
-    console.log("Current Auth'd users: ");
+    console.log("\n[SERVR] Current Auth'd users: ");
     UIDs_Auth.forEach(function(value){
         console.log(value.substr(0,5));
     });
@@ -78,6 +72,7 @@ var server_sweep = function() {
 app.post('/', function (req, res) {
     var type = req.body.type;
     
+    // Client requests a UID
     if (type == "get_uid") {
         var newID = UIDs[UIDs.length - 1] + 1;
         UIDs.push(newID);
@@ -86,6 +81,8 @@ app.post('/', function (req, res) {
         var response = '{"type":"get","newID":"' + responseUID + '"}';
         console.log("["+ responseUID.substr(0, 5) + "] GET_UID");
     }
+    
+    // Client attempts authentication
     else if (type == "intent_auth") {
         var passHash = make_hash(req.body.passcode);
         var success = valid_pass(passHash).toString();
@@ -97,11 +94,10 @@ app.post('/', function (req, res) {
         var response = '{"type":"intent","success":"' + success + '"}';  
         
     }
+    
+    // Client selects a colour
     else if (type == "intent_colour") {
-        var valid = false;
-        UIDs_Auth.forEach(function(value){
-            if (value == req.body.id) { valid = true; }
-        });
+        var valid = valid_intent(req.body.id);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
@@ -113,11 +109,10 @@ app.post('/', function (req, res) {
             var response = '{"type":"intent","success":"false"}';
         }
     }
+    
+    // Client selects power off (for the LEDs)
     else if (type == "intent_off") {
-        var valid = false;
-        UIDs_Auth.forEach(function(value){
-            if (value == req.body.id) { valid = true; }
-        });
+        var valid = valid_intent(req.body.id);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
             var response = '{"type":"intent","success":"' + valid + '"}';
@@ -130,7 +125,6 @@ app.post('/', function (req, res) {
     }
     
     res.send(response);
-//    console.log("Responded to client")
 })
 
 setInterval(server_sweep, 10000);

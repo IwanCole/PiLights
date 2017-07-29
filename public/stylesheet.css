@@ -67,7 +67,7 @@ i.lock {
     bottom: 0px;
     width: 100%;
     position: fixed;
-    cursor: pointer;
+    cursor: default;
 }
 i.power {
     display: block;
@@ -138,7 +138,7 @@ span {
     border-radius: 45px;
     display: inline-block;
     background-color: #fff;
-    cursor: pointer;
+    cursor: default;
 }
 
 /*

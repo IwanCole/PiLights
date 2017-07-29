@@ -82,25 +82,11 @@ var get_uid = function() {
 };
 
 var main = function() {
-    
+    /* Add html elements and bind event listeners */
     get_uid();
     create_colours();
     colour_intent();
     power_intent();
-    $(".colourButton").click(function () {
-        var colourRequest = $(this).attr('class').replace("colourButton ", "");
-        $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },
-            function(data, status){
-                var obj = jQuery.parseJSON(data);
-                console.log("Server replied: " + obj.colour);
-                if (obj.colour != "black") {
-                    $("body").css("background-color", obj.colour);    
-                }
-                else {
-                    $("body").css("background-color", "#fff");
-                } 
-            });
-    });
     
     $(".colourContainer").click(function () {
         $(".fullPageCover").fadeToggle(400);
