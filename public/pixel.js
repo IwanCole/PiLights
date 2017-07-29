@@ -8,11 +8,18 @@ var create_colours = function() {
 };
 
 var update_colours = function(colour) {
-    if (colour != "off") {
-        var newClassName = "titleBar " + colour; 
+    $('meta[name=theme-color]').remove();
+    if (colour != "off") { 
+        var newClassName = "titleBar " + colour;
+        
+        var $temp = $('<span class="' + colour + '"></span>"').hide().appendTo("body");
+        var hexVal = $temp.css("background-color");
+        $temp.remove();
+        $('head').append('<meta name="theme-color" content="' + hexVal + '">');
     }
-    else {
-        var newClassName = "titleBar";
+    else { 
+        var newClassName = "titleBar"; 
+        $('head').append('<meta name="theme-color" content="#2a2a2a">');
     }
     $(".titleBar").attr('class', newClassName);
 };
@@ -55,8 +62,6 @@ var passcode_intent = function() {
             if(obj.success == "true") {
                 $(".lockScreen").slideUp();
                 $(".content").delay(400).fadeIn();
-//                $('meta[name=theme-color]').remove();
-//                $('head').append('<meta name="theme-color" content="#EEEEEE">');
             }
             else {
                 $(".lockTitle").addClass("animate_authBad");
@@ -66,7 +71,6 @@ var passcode_intent = function() {
                 $(".authInput").focus();
             }            
         });
-
     }
 };
 
@@ -78,7 +82,6 @@ var get_uid = function() {
             oneTimeKey = obj.newID;
             Cookies.set("sessionKey", oneTimeKey);
         });
-    
 };
 
 var main = function() {
@@ -96,7 +99,6 @@ var main = function() {
         $(".detailedColours").fadeToggle(400);
         $(".fullPageCover").fadeToggle(400); 
     });
-    
 };
 
 $(document).ready(main);
