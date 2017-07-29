@@ -113,6 +113,21 @@ app.post('/', function (req, res) {
             var response = '{"type":"intent","success":"false"}';
         }
     }
+    else if (type == "intent_off") {
+        var valid = false;
+        UIDs_Auth.forEach(function(value){
+            if (value == req.body.id) { valid = true; }
+        });
+        if (valid == true) {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
+            var response = '{"type":"intent","success":"' + valid + '"}';
+            python_intent("off");
+        }
+        else {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF: BAD AUTH");
+            var response = '{"type":"intent","success":"false"}';
+        }
+    }
     
     res.send(response);
 //    console.log("Responded to client")

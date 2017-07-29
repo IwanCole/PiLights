@@ -8,12 +8,17 @@ var create_colours = function() {
 };
 
 var update_colours = function(colour) {
-    var newClassName = "titleBar " + colour;
+    if (colour != "off") {
+        var newClassName = "titleBar " + colour; 
+    }
+    else {
+        var newClassName = "titleBar";
+    }
     $(".titleBar").attr('class', newClassName);
 };
 
 var colour_intent = function() {
-     $(".colourOpt").click(function () {
+    $(".colourOpt").click(function () {
         var colourRequest = $(this).attr('class').replace("colourOpt ", "");
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },
             function(data, status){
@@ -21,16 +26,20 @@ var colour_intent = function() {
                 if (obj.success == "true") {
                     update_colours(obj.colour);
                 }
-//                console.log("Server replied: " + obj.colour);            
-//                if (obj.colour != "black") {
-//                    $("body").css("background-color", obj.colour);    
-//                }
-//                else {
-//                    $("body").css("background-color", "#fff");
-//                } 
             });
-    }); 
-    
+    });  
+};
+
+var power_intent = function() {
+    $(".titleBar").click(function() {
+        $.post("", { id: Cookies.get("sessionKey"), type: "intent_off"},
+            function(data, status){
+                var obj = jQuery.parseJSON(data);
+                if (obj.success == "true") {
+                    update_colours("off");
+                }
+            });
+    })  
 };
 
 var passcode_intent = function() {
@@ -53,7 +62,8 @@ var passcode_intent = function() {
                 $(".lockTitle").addClass("animate_authBad");
                 $(".lock").addClass("animate_authBad");
                 $(".authInput").val("");
-                $(".authInput").prop('disabled', false); 
+                $(".authInput").prop('disabled', false);
+                $(".authInput").focus();
             }            
         });
 
@@ -76,6 +86,7 @@ var main = function() {
     get_uid();
     create_colours();
     colour_intent();
+    power_intent();
     $(".colourButton").click(function () {
         var colourRequest = $(this).attr('class').replace("colourButton ", "");
         $.post("", { id: Cookies.get("sessionKey"), type: "intent_colour", colour: colourRequest },

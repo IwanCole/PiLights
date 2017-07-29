@@ -54,17 +54,33 @@ i.lock {
     background-color: #3e3e3e;
 }
 .titleBar {
+    /* Prevents text selection when clicking the power-off button */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     background-color: #2a2a2a;
     padding: 15px 0px 15px 0px;
     display: block;
     bottom: 0px;
     width: 100%;
     position: fixed;
+    cursor: pointer;
+}
+i.power {
+    display: block;
+    margin: 0px 15px 0px -50px;
+    color: #fff;
+    float: right;
+    font-size: 28px;
 }
 .title {
     margin: 0px;
     font-size: 24px;
     font-weight: bold;
+    display: inline-block;
 }
 .title, .subTitle {
     color: #fff;
