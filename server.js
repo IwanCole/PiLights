@@ -1,5 +1,6 @@
 console.log('\n\n--- Node Version: ' + process.version + ' ---');
 
+var fs = require('fs');
 var ip = require('ip');
 var path  = require('path');
 var crypto = require('crypto');
@@ -8,34 +9,49 @@ var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 
 var UIDs = [0];
+var intents = [0];
 var UIDs_Auth = [];
 var app = express();
 var staticPath = path.join(__dirname, '/public');
+var colourObj = JSON.parse(fs.readFileSync('colours.json', 'utf8'));
+// console.log(JSON.stringify(colourObj));
+// var selection = "cyan";
+// console.log(colourObj[selection]);
 
 app.use(express.static(staticPath));
 app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       extended: true
-})); 
+}));
+
+var lookup_colour = function(colour) {
+    var hexColour = colourObj[colour];
+    return hexColour;
+}
 
 // Basic python spawner, needs LOTS of work
 var python_intent = function(colour) {
-    var pyHandler = spawn("python", ["pixel_handler.py"]);  
+    var pyHandler = spawn("python", ["pixel_handler.py"]);
     var pyOutput = "";
-    
+    var hexColour = lookup_colour(colour);
+    var newIntent = intents[intents.length - 1] + 1;
+    intents.push(newIntent);
+
+    var packet = {"iid":newIntent, "value":hexColour}
+    // console.log(hexColour);
+
     pyHandler.stdout.on("data", function(data) {
         pyOutput += data.toString();
     });
-    
+
     pyHandler.stdout.on("end", function() {
         console.log("[SERVR] PyHandler res: " + pyOutput);
     });
-    
-    pyHandler.stdin.write(JSON.stringify(colour));
+    console.log(JSON.stringify(packet));
+    pyHandler.stdin.write(JSON.stringify(packet));
     pyHandler.stdin.end();
-    
-};
 
+};
 
 // Simple hash, not used for security, used to track clients
 var make_hash = function(input) {
@@ -71,17 +87,17 @@ var server_sweep = function() {
 // POST method route
 app.post('/', function (req, res) {
     var type = req.body.type;
-    
+
     // Client requests a UID
     if (type == "get_uid") {
         var newID = UIDs[UIDs.length - 1] + 1;
         UIDs.push(newID);
         responseUID = make_hash(newID);
-        
+
         var response = '{"type":"get","newID":"' + responseUID + '"}';
         console.log("["+ responseUID.substr(0, 5) + "] GET_UID");
     }
-    
+
     // Client attempts authentication
     else if (type == "intent_auth") {
         var passHash = make_hash(req.body.passcode);
@@ -91,10 +107,10 @@ app.post('/', function (req, res) {
         if (success == "true") {
             UIDs_Auth.push(hashID);
         }
-        var response = '{"type":"intent","success":"' + success + '"}';  
-        
+        var response = '{"type":"intent","success":"' + success + '"}';
+
     }
-    
+
     // Client selects a colour
     else if (type == "intent_colour") {
         var valid = valid_intent(req.body.id);
@@ -109,7 +125,7 @@ app.post('/', function (req, res) {
             var response = '{"type":"intent","success":"false"}';
         }
     }
-    
+
     // Client selects power off (for the LEDs)
     else if (type == "intent_off") {
         var valid = valid_intent(req.body.id);
@@ -123,7 +139,7 @@ app.post('/', function (req, res) {
             var response = '{"type":"intent","success":"false"}';
         }
     }
-    
+
     res.send(response);
 })
 
