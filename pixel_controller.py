@@ -2,6 +2,7 @@ from multiprocessing import Process, Queue, Lock
 import unicornhat as uh
 import sys, time, zmq, json
 
+# Convert co-ords to work with a 1*24 ring instead of a 8*8 matrix of LEDs
 def conv_coords( i ):
     if i < 0:
         return conv_coords(24 + i)
@@ -15,12 +16,14 @@ def conv_coords( i ):
         return [1, 7-(i%8)]
 
 
+# Print without overlap
 def multi_print(string, lock):
     lock.acquire()
     print(string)
     lock.release()
 
 
+# Convert HEX -> rbg e.g FFFFFF -> 255,255,255
 def hex_rgb(hexColour):
     r = int(hexColour[0:2], 16)
     g = int(hexColour[2:4], 16)
@@ -28,28 +31,39 @@ def hex_rgb(hexColour):
     return (r, g, b)
 
 
+# Send new colour to NeoPixel and display
 def set_pixels(hexColour):
+    # Error handling: if for some reason UH fails, it doesn't crash everything
+    # try:
     (r, g, b) = hex_rgb(hexColour)
     for i in range(24):
         xy = conv_coords(i)
         uh.set_pixel(xy[0], xy[1], r, g, b)
     uh.show()
+        # return True
+    # except Exception as e: return e
 
 
+# Listen for requests coming from the pixel_handler (from node)
 def pixel_listener(queue, lock):
     context = zmq.Context()
     socket = context.socket(zmq.REP)
     socket.bind("tcp://*:5555")
     multi_print("Listening on port 5555...", lock)
     while True:
-        #  Wait for next request from client
         message = socket.recv()
         print("Received request: \n" + message)
         message = message.replace("u'","\"").replace("'","\"")
         reqObj = json.loads(message)
+        # if (reqObj['iid'] != 0):
         queue.put(reqObj)
+        socket.send("Success")
+        # else:
+            # (r, g, b) = uh.get_pixel(0,0)
+            # currentHex = (str(hex(r)) + str(hex(g)) + str(hex(b))).replace("0x","")
+            # socket.send(currentHex)
+            # TODO
 
-        socket.send(b"World")
 
 
 def pixel_lights(queue, lock):
@@ -64,7 +78,7 @@ def pixel_lights(queue, lock):
 
 
 
-
+# Start the listener and manager, use a queue to communicate
 def main():
     print("\n\n--- Pixel Controller ---")
     q = Queue()

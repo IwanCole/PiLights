@@ -7,5 +7,6 @@
     "cyan":"00ffff",
     "green":"00ff00",
     "yellow":"ffff00",
-    "orange":"ffaa00"
+    "orange":"ffaa00",
+    "off":"000000"
 }

@@ -8,15 +8,14 @@ var express = require('express');
 var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 
-var UIDs = [0];
-var intents = [0];
-var UIDs_Auth = [];
+var UIDs = [0];                 // Used Unique IDs
+var intents = [0];              // Used intent IDs
+var UIDs_Auth = [];             // Auth'd UIDs (hashed)
+// var current_col = "000000";     // Current NeoPixel value
 var app = express();
 var staticPath = path.join(__dirname, '/public');
 var colourObj = JSON.parse(fs.readFileSync('colours.json', 'utf8'));
-// console.log(JSON.stringify(colourObj));
-// var selection = "cyan";
-// console.log(colourObj[selection]);
+
 
 app.use(express.static(staticPath));
 app.use(bodyParser.json());       // to support JSON-encoded bodies
@@ -24,10 +23,28 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
       extended: true
 }));
 
+// Read JSON file containing colour hex values
 var lookup_colour = function(colour) {
     var hexColour = colourObj[colour];
     return hexColour;
 }
+
+// var python_poll = function() {
+//     var pyHandler = spawn("python", ["pixel_handler.py"]);
+//     var pyOutput = "";
+//     var packet = {"iid":0, "value":0}
+//
+//     pyHandler.stdout.on("data", function(data) {
+//         pyOutput += data.toString();
+//     });
+//     pyHandler.stdout.on("end", function() {
+//         current_col = pyOutput;
+//     });
+//     pyHandler.stdin.write(JSON.stringify(packet));
+//     pyHandler.stdin.end();
+//     console.log(current_col);
+// };
+
 
 // Basic python spawner, needs LOTS of work
 var python_intent = function(colour) {
@@ -38,19 +55,15 @@ var python_intent = function(colour) {
     intents.push(newIntent);
 
     var packet = {"iid":newIntent, "value":hexColour}
-    // console.log(hexColour);
 
     pyHandler.stdout.on("data", function(data) {
         pyOutput += data.toString();
     });
-
     pyHandler.stdout.on("end", function() {
         console.log("[SERVR] PyHandler res: " + pyOutput);
     });
-    console.log(JSON.stringify(packet));
     pyHandler.stdin.write(JSON.stringify(packet));
     pyHandler.stdin.end();
-
 };
 
 // Simple hash, not used for security, used to track clients
@@ -78,6 +91,7 @@ var valid_intent = function(UID) {
 
 // Periodically print the currently authenticated clients
 var server_sweep = function() {
+    // python_poll();
     console.log("\n[SERVR] Current Auth'd users: ");
     UIDs_Auth.forEach(function(value){
         console.log(value.substr(0,5));
