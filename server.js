@@ -136,7 +136,7 @@ app.post('/', function (req, res) {
             UIDs_Auth.push(hashID);
             var response = '{"type":"intent","success":"' + success + '","session":"'+ session_key +'"}';
         } else {
-            var response = '{"type":"intent","success":"' + success + '}';
+            var response = '{"type":"intent","success":"' + success + '"}';
         }
         
 
