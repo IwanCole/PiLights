@@ -8,6 +8,7 @@ var express = require('express');
 var spawn = require('child_process').spawn;
 var bodyParser = require('body-parser');
 
+var session_key;
 var UIDs = [0];                 // Used Unique IDs
 var intents = [0];              // Used intent IDs
 var UIDs_Auth = [];             // Auth'd UIDs (hashed)
@@ -27,7 +28,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 var lookup_colour = function(colour) {
     var hexColour = colourObj[colour];
     return hexColour;
-}
+};
+
+
 
 // var python_poll = function() {
 //     var pyHandler = spawn("python", ["pixel_handler.py"]);
@@ -73,19 +76,30 @@ var make_hash = function(input) {
     return shasum.digest('hex');
 };
 
+
+// I know this isn't secure, but think about the project's context
+// Used to determine between clients that have both been Auth'd, but
+// one was Auth'd in a previous server session, so is an old client
+var server_session = function() {
+    var seed = Math.floor(Math.random() * 100) + 1;
+    session_key = make_hash(seed);
+};
+
+
 // I know this isn't secure but the only reason I have a weak passcode
 // is to stop flatmates on the same wifi from having access
 var valid_pass = function(user) {
     if (user == "6d492170753211fcde587882d77e1e8dcce1bc27") { return true; }
     else { return false; }
-}
+};
 
 // Validate incoming intent from client
-var valid_intent = function(UID) {
+var valid_intent = function(UID, server_key) {
     var valid = false;
     UIDs_Auth.forEach(function(value){
         if (value == UID) { valid = true; }
     });
+    valid &= (server_key == session_key); 
     return valid;
 };
 
@@ -120,14 +134,17 @@ app.post('/', function (req, res) {
         console.log("[" + hashID.substr(0,5) + "] INTENT_AUTH: " + success);
         if (success == "true") {
             UIDs_Auth.push(hashID);
+            var response = '{"type":"intent","success":"' + success + '","session":"'+ session_key +'"}';
+        } else {
+            var response = '{"type":"intent","success":"' + success + '}';
         }
-        var response = '{"type":"intent","success":"' + success + '"}';
+        
 
     }
 
     // Client selects a colour
     else if (type == "intent_colour") {
-        var valid = valid_intent(req.body.id);
+        var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
@@ -142,7 +159,7 @@ app.post('/', function (req, res) {
 
     // Client selects power off (for the LEDs)
     else if (type == "intent_off") {
-        var valid = valid_intent(req.body.id);
+        var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
             var response = '{"type":"intent","success":"' + valid + '"}';
@@ -157,9 +174,11 @@ app.post('/', function (req, res) {
     res.send(response);
 })
 
+server_session();
 setInterval(server_sweep, 10000);
 
 app.listen(8080, function() {
     console.log('Running on LAN ' + ip.address());
-    console.log('Express HTTP server listening on port 8080');
+    console.log('Express HTTP server on listening on port 8080');
+    console.log('Server session_key: [ '+ session_key.substr(0,10) +'... ]')
 });

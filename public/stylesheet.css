@@ -68,6 +68,7 @@ i.lock {
     width: 100%;
     position: fixed;
     cursor: default;
+    z-index: -1;
 }
 i.power {
     display: block;
@@ -90,6 +91,40 @@ i.power {
     font-size: 26px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.errorContainer {
+    display: none;
+    margin-top: -280px;
+    text-align: center;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+}
+.errorTitle {
+    font-size: 40px;
+    margin-bottom: -10px;
+}
+.errorDetails {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 22px;
+}
+.errorCode {
+    font-weight: bold;
+    color: #777;
+}
+.fullPageCover {
+    width: 100%;
+    height: 100%;
+    background-color: #FFFFFF;
+    opacity: 0.9;
+    position: fixed;
+    bottom: 0px;
+    display: none;
+    left: 0px;
+    overflow: auto;
 }
 
 div.buttonContainer {
@@ -174,18 +209,7 @@ span {
     cursor: pointer;
     display: inline-block;
 }
-.fullPageCover {
-    width: 100%;
-    height: 100%;
-/*    background-color: #FFFFFF;*/
-    background-color: #000000;
-    opacity: 0.7;
-    position: fixed;
-    bottom: 0px;
-    display: none;
-    left: 0px;
-    overflow: auto;
-}
+
 
 /*~~~~~~~~ ALL COLOUR DEFS ~~~~~~~~*/
 .red {
