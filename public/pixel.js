@@ -14,7 +14,7 @@ var error_call = function(status) {
         details += "refresh the page and login again.";
         var code = "CL0" + status;
     }
-    
+
     $(".errorTitle").text(errorTitle);
     $(".errorDetails").text(details);
     $(".errorCode").text(code);
@@ -22,19 +22,24 @@ var error_call = function(status) {
     $(".errorContainer").fadeIn(400);
 }
 
+var detailed_colours = function() {
+    $('.colourOpt').on('press', function(e) {
+          console.log(this, e);
+        });
+};
 
 var update_colours = function(colour) {
     $('meta[name=theme-color]').remove();
-    if (colour != "off") { 
+    if (colour != "off") {
         var newClassName = "titleBar " + colour;
-        
+
         var $temp = $('<span class="' + colour + '"></span>"').hide().appendTo("body");
         var hexVal = $temp.css("background-color");
         $temp.remove();
         $('head').append('<meta name="theme-color" content="' + hexVal + '">');
     }
-    else { 
-        var newClassName = "titleBar"; 
+    else {
+        var newClassName = "titleBar";
         $('head').append('<meta name="theme-color" content="#2a2a2a">');
     }
     $(".titleBar").attr('class', newClassName);
@@ -53,7 +58,7 @@ var colour_intent = function() {
                     error_call(1);
                 }
             });
-    });  
+    });
 };
 
 var power_intent = function() {
@@ -67,7 +72,7 @@ var power_intent = function() {
                     error_call(2);
                 }
             });
-    })  
+    })
 };
 
 var passcode_intent = function() {
@@ -91,7 +96,7 @@ var passcode_intent = function() {
                 $(".authInput").val("");
                 $(".authInput").prop('disabled', false);
                 $(".authInput").focus();
-            }            
+            }
         });
     }
 };
@@ -110,16 +115,18 @@ var main = function() {
     /* Add html elements and bind event listeners */
     get_uid();
     create_colours();
+    detailed_colours();
     colour_intent();
     power_intent();
-    
+
+
 //    $(".colourContainer").click(function () {
 //        $(".fullPageCover").fadeToggle(400);
 //        $(".detailedColours").fadeToggle(400);
 //    });
 //    $(".fullPageCover").click(function () {
 //        $(".detailedColours").fadeToggle(400);
-//        $(".fullPageCover").fadeToggle(400); 
+//        $(".fullPageCover").fadeToggle(400);
 //    });
 };
 
