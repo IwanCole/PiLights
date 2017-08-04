@@ -122,29 +122,15 @@ i.power {
     opacity: 0.9;
     position: fixed;
     bottom: 0px;
-    display: none;
+    display: block;
     left: 0px;
     overflow: auto;
 }
 
-div.buttonContainer {
-    margin-left: auto;
-    margin-right: auto;
-    width: 200px;
-    display: block;
+.errorCover, .detailedCover {
+    display: none;
 }
-div.colourButton {
-    width: 200px;
-    display: block;
-    height: 50px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    text-decoration: none;
-    border-color: #000;
-    border-style: solid;
-    border-radius: 10px;
-    cursor: pointer;
-}
+
 
 p.colourText {
     font-size: 26px;
@@ -154,10 +140,10 @@ p.colourText {
     color: #000;
 }
 
-span {
+/*span {
     height: 90px;
     display: block;
-}
+}*/
 .colourContainer {
     margin-left: auto;
     margin-right: auto;
@@ -175,41 +161,28 @@ span {
     background-color: #fff;
     cursor: default;
 }
-
-/*
-.colourContainer {
-    width:90px;
-    height 90px;
-    background-color: green;
-    border-radius: 8px;
-    cursor: pointer;
-    display: inline-block;
+.detailedCover {
+    background-color: #111111;
+    opacity: 0.8;
 }
-*/
 .detailedColours {
+    display: none;
+    width: 400px;
+    margin-top: -221px;
+    text-align: center;
+    position: relative;
     margin-left: auto;
     margin-right: auto;
-    margin-top: -282px;
-    width: 300px;
-    display: inline-block;
-    display: none;
-    position: fixed;
-/*    bottom: 0px;*/
-    display: none;
-/*    left: 0px;*/
-    overflow: auto;
 }
-.colourContainer2 {
-    width:90px;
-    height 90px;
-/*    border-color: #000;*/
-    background-color: red;
-/*    border-style: solid;*/
-    border-radius: 8px;
-    cursor: pointer;
+.detColourOpt {
+    width: 70px;
+    height: 70px;
+    margin: 3px;
+    border-radius: 35px;
     display: inline-block;
+    background-color: #fff;
+    cursor: default;
 }
-
 
 /* For the LEDs
 Red	ff0000

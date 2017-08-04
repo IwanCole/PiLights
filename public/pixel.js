@@ -1,6 +1,7 @@
+var colours = ["red", "pink", "purple", "blue", "lblue", "cyan", "green", "yellow", "orange"];
+
 var create_colours = function() {
     var i = 0;
-    var colours = ["red", "pink", "purple", "blue", "lblue", "cyan", "green", "yellow", "orange"];
     while (i < 9) {
         $(".colourContainer").append('<div class="colourOpt ' + colours[i] + '"></div>');
         i = i + 1;
@@ -18,14 +19,32 @@ var error_call = function(status) {
     $(".errorTitle").text(errorTitle);
     $(".errorDetails").text(details);
     $(".errorCode").text(code);
-    $(".fullPageCover").fadeIn(400);
+    $(".errorCover").fadeIn(400);
     $(".errorContainer").fadeIn(400);
 }
 
 var detailed_colours = function() {
     $('.colourOpt').on('press', function(e) {
-          console.log(this, e);
+            $(".detailedColours").empty();
+            // Don't hate me (:
+            var detColours = ["or3", "or4", "rp1", "rp2", "rp3", "rp4", "pp1", "pp2", "pp3", "pp4", "pb1", "pb2", "pb3", "pb4", "bl1", "bl2", "bl3", "bl4", "lc1", "lc2", "lc3", "lc4", "cg1", "cg2", "cg3", "cg4", "gy1", "gy2", "gy3", "gy4", "yo1", "yo2", "yo3", "yo4", "or1", "or2"];
+            var selection = $(this).attr('class').replace("colourOpt ","");
+            var startIndex = (jQuery.inArray(selection, colours)) * 4;
+            var i = 0;
+            while (i < 4) {
+                $(".detailedColours").append('<div class="detColourOpt ' + detColours[startIndex + i] + '"></div>');
+                if (i == 1) {
+                    $(".detailedColours").append('<div class="detColourOpt ' + selection + '"></div>');
+                }
+                i = i + 1;
+            }
+            $(".detailedCover").fadeIn(200);
+            $(".detailedColours").fadeIn(200);
         });
+    $(".detailedCover").click(function() {
+        $(".detailedCover").fadeOut(200);
+        $(".detailedColours").fadeOut(200);
+    });
 };
 
 var update_colours = function(colour) {

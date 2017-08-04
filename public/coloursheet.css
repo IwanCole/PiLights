@@ -26,6 +26,35 @@
 .orange {
     background-color: #FF9100;
 }
+/* Actual Colours for above in detailed panel */
+.detailedColours > .red {
+    background-color: #ff0000;
+}
+.detailedColours > .pink {
+    background-color: #ff00aa;
+}
+.detailedColours > .purple {
+    background-color: #aa00ff;
+}
+.detailedColours > .blue {
+   background-color: #0000ff;
+}
+.detailedColours > .lblue {
+    background-color: #00AAFF;
+}
+.detailedColours > .cyan {
+    background-color: #00FFFF;
+}
+.detailedColours > .green {
+    background-color: #00FF00;
+}
+.detailedColours > .yellow {
+    background-color: #FFFF00;
+}
+.detailedColours > .orange {
+    background-color: #FFAA00;
+}
+/* Detailed colours, hex values are actual ones passed to the NeoPixel */
 .rp1 {
     background-color: #ff0022;
 }
