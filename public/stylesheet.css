@@ -211,34 +211,6 @@ span {
 }
 
 
-/*~~~~~~~~ ALL COLOUR DEFS ~~~~~~~~*/
-.red {
-    background-color: #ff2919;
-}
-.pink {
-    background-color: #E91E63;
-}
-.purple {
-    background-color: #D500F9;
-}
-.blue {
-   background-color: #304FFE;
-}
-.lblue {
-    background-color: #00B0FF;
-}
-.cyan {
-    background-color: #00E5FF;
-}
-.green {
-    background-color: #48d64e;
-}
-.yellow {
-    background-color: #FFEB3B;
-}
-.orange {
-    background-color: #FF9100;
-}
 /* For the LEDs
 Red	ff0000
 Pink	ff00aa
@@ -266,10 +238,10 @@ Orange	ffaa00
         color: #fff;
     }
 }
-    
+
 .animate_authBad {
     -webkit-animation-name: authBad;
     -webkit-animation-duration: 700ms;
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
-}  
+}
