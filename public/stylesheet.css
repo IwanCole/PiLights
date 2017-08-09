@@ -53,6 +53,51 @@ i.lock {
     display: none;
     background-color: #3e3e3e;
 }
+.splash {
+    display: block;
+    align-content: center;
+}
+.plainColours {
+    display: none;
+}
+.sectionCard {
+    background-color: #2a2222;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    border-radius: 8px;
+    width: 90%;
+    display: block;
+    overflow: auto;
+}
+.effectsSection {
+    background-color: #22222a;
+}
+.sectionImg {
+    height: 130px;
+    background-size: cover;
+    width: 100%;
+}
+.simpleSectionImg {
+    background-image: url('media/rainbow.jpg');
+    background-position: bottom;
+    
+}
+.effectsSectionImg {
+    background-image: url('media/water.jpg');
+    background-position: bottom;
+    background-repeat: no-repeat;
+}
+.sectionTitle {
+    margin-top: -45px;
+    color: #fff;
+    text-align: left;
+    margin-left: 20px;
+}
+.sectionDescription {
+    margin: 15px;
+    color: #fff;
+}
 .titleBar {
     /* Prevents text selection when clicking the power-off button */
     -webkit-touch-callout: none;

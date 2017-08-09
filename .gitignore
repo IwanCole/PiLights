@@ -1,4 +1,5 @@
 node_modules/*
 todo.txt
-push.bat
+anii.py
+*.bat
 *.pyc

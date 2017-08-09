@@ -23,6 +23,22 @@ var error_call = function(status) {
     $(".errorContainer").fadeIn(400);
 }
 
+var detailed_intent = function() {
+    $(".detColourOpt").click(function () {
+        var colourRequest = $(this).attr('class').replace("detColourOpt ", "");
+        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_colour", colour: colourRequest },
+            function(data, status){
+                var obj = jQuery.parseJSON(data);
+                console.log(obj.success);
+                if (obj.success == 1) {
+                    update_colours(obj.colour);
+                } else {
+                    error_call(1);
+                }
+            });
+    });
+};
+
 var detailed_colours = function() {
     $('.colourOpt').on('press', function(e) {
             $(".detailedColours").empty();
@@ -38,13 +54,16 @@ var detailed_colours = function() {
                 }
                 i = i + 1;
             }
+            detailed_intent();
             $(".detailedCover").fadeIn(200);
             $(".detailedColours").fadeIn(200);
         });
+
     $(".detailedCover").click(function() {
         $(".detailedCover").fadeOut(200);
         $(".detailedColours").fadeOut(200);
     });
+
 };
 
 var update_colours = function(colour) {
@@ -78,6 +97,7 @@ var colour_intent = function() {
                 }
             });
     });
+
 };
 
 var power_intent = function() {
