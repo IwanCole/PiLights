@@ -61,6 +61,7 @@ i.lock {
 .content {
     display: none;
     background-color: #3e3e3e;
+    padding-bottom: 40px;
 }
 .splash {
     display: block;
@@ -70,7 +71,6 @@ i.lock {
     display: none;
 }
 .sectionCard {
-    background-color: #2a2222;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
@@ -79,8 +79,14 @@ i.lock {
     display: block;
     overflow: auto;
 }
+.simpleSection {
+    background-color: #2a2222;
+}
 .effectsSection {
     background-color: #22222a;
+}
+.settingSection {
+    background-color: #222222;
 }
 .sectionImg {
     height: 130px;
@@ -90,12 +96,15 @@ i.lock {
 .simpleSectionImg {
     background-image: url('media/rainbow.jpg');
     background-position: bottom;
-    
 }
 .effectsSectionImg {
     background-image: url('media/water.jpg');
     background-position: bottom;
     background-repeat: no-repeat;
+}
+.settingSectionImg {
+    background-image: url('media/settings.jpg');
+    background-position: bottom;
 }
 .sectionTitle {
     margin-top: -45px;

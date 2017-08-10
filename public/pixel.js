@@ -146,12 +146,14 @@ var navigation = function() {
         $(".splash").fadeOut();
         if (section == "simpleSection") { $(".plainColours").delay(400).fadeIn() }
         else if (section == "effectsSection") { $(".effectsColours").delay(400).fadeIn() }
+        else if (section == "settingSection") { $(".settings").delay(400).fadeIn() }
         $(".back").fadeIn(200);
     });
     
     $(".back").click(function() {
         $(".plainColours").fadeOut(400);
         $(".effectsColours").fadeOut(400);
+        $(".settings").fadeOut(400);
         $(".splash").delay(400).fadeIn(400);
         $(".back").fadeOut(200);
     });
