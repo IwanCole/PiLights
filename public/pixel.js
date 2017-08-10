@@ -140,6 +140,24 @@ var passcode_intent = function() {
     }
 };
 
+var navigation = function() {
+    $(".sectionCard").click(function() {
+        var section = $(this).attr('class').replace("sectionCard ","").replace(" noTouch", "");
+        $(".splash").fadeOut();
+        if (section == "simpleSection") { $(".plainColours").delay(400).fadeIn() }
+        else if (section == "effectsSection") { $(".effectsColours").delay(400).fadeIn() }
+        $(".back").fadeIn(200);
+    });
+    
+    $(".back").click(function() {
+        $(".plainColours").fadeOut(400);
+        $(".effectsColours").fadeOut(400);
+        $(".splash").delay(400).fadeIn(400);
+        $(".back").fadeOut(200);
+    });
+};
+
+
 var get_uid = function() {
     var oneTimeKey;
     $.post("", { type: "get_uid" },
@@ -153,6 +171,7 @@ var get_uid = function() {
 var main = function() {
     /* Add html elements and bind event listeners */
     get_uid();
+    navigation();
     create_colours();
     detailed_colours();
     colour_intent();
