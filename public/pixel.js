@@ -69,7 +69,7 @@ var detailed_colours = function() {
 var update_colours = function(colour) {
     $('meta[name=theme-color]').remove();
     if (colour != "off") {
-        var newClassName = "titleBar " + colour;
+        var newClassName = "titleBar noTouch " + colour;
 
         var $temp = $('<span class="' + colour + '"></span>"').hide().appendTo("body");
         var hexVal = $temp.css("background-color");
@@ -77,7 +77,7 @@ var update_colours = function(colour) {
         $('head').append('<meta name="theme-color" content="' + hexVal + '">');
     }
     else {
-        var newClassName = "titleBar";
+        var newClassName = "titleBar noTouch";
         $('head').append('<meta name="theme-color" content="#2a2a2a">');
     }
     $(".titleBar").attr('class', newClassName);
@@ -101,7 +101,7 @@ var colour_intent = function() {
 };
 
 var power_intent = function() {
-    $(".titleBar").click(function() {
+    $(".power").click(function() {
         $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_off"},
             function(data, status){
                 var obj = jQuery.parseJSON(data);

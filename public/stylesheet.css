@@ -61,7 +61,7 @@ i.lock {
 .content {
     display: none;
     background-color: #3e3e3e;
-    padding-bottom: 40px;
+    padding-bottom: 80px;
 }
 .splash {
     display: block;
@@ -126,7 +126,7 @@ i.lock {
     background-color: #2a2a2a;
     padding: 15px 0px 15px 0px;
     width: 100%;
-    z-index: -2;
+    z-index: 1;
 }
 i.power {
     display: block;
@@ -142,7 +142,7 @@ i.back {
     color: #fff;
     margin: 0px -50px 0px 15px;
     font-size: 28px;
-    z-index: -1;
+    z-index: 2;
 }
 .title {
     margin: 0px;
@@ -192,10 +192,12 @@ i.back {
     display: block;
     left: 0px;
     overflow: auto;
+    z-index: 3;
 }
 
 .errorCover, .detailedCover {
     display: none;
+    z-index: 3;
 }
 
 
@@ -240,6 +242,7 @@ p.colourText {
     position: relative;
     margin-left: auto;
     margin-right: auto;
+    z-index: 4;
 }
 .detColourOpt {
     width: 70px;
