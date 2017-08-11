@@ -25,9 +25,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 // Read JSON file containing colour hex values
-var lookup_colour = function(colour) {
-    var hexColour = colourObj[colour];
-    return hexColour;
+var lookup_code = function(userReq) {
+    var pixelCode = colourObj[userReq];
+    return pixelCode;
 };
 
 
@@ -50,14 +50,14 @@ var lookup_colour = function(colour) {
 
 
 // Basic python spawner, needs LOTS of work
-var python_intent = function(colour) {
+var python_intent = function(userReq, type) {
     var pyHandler = spawn("python", ["pixel_handler.py"]);
     var pyOutput = "";
-    var hexColour = lookup_colour(colour);
+    var pixelCode = lookup_code(userReq);
     var newIntent = intents[intents.length - 1] + 1;
     intents.push(newIntent);
 
-    var packet = {"iid":newIntent, "value":hexColour}
+    var packet = {"iid":newIntent, "value":pixelCode}
 
     pyHandler.stdout.on("data", function(data) {
         pyOutput += data.toString();
@@ -99,7 +99,7 @@ var valid_intent = function(UID, server_key) {
     UIDs_Auth.forEach(function(value){
         if (value == UID) { valid = true; }
     });
-    valid &= (server_key == session_key); 
+    valid &= (server_key == session_key);
     return valid;
 };
 
@@ -138,7 +138,7 @@ app.post('/', function (req, res) {
         } else {
             var response = '{"type":"intent","success":"' + success + '"}';
         }
-        
+
 
     }
 
@@ -149,13 +149,28 @@ app.post('/', function (req, res) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
             var response = '{"type":"intent","success":"' + valid + '","colour":"' + colourSelected + '"}';
-            python_intent(req.body.colour);
+            python_intent(req.body.colour, 0);
         }
         else {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
     }
+
+    else if (type == "intent_effect") {
+        var valid = valid_intent(req.body.id, req.body.server_key);
+        if (valid == true) {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: " + req.body.effect_type);
+            var effectSelected = req.body.effect_type;
+            var response = '{"type":"intent","success":"' + valid + '","effect":"' + effectSelected + '"}';
+            python_intent(req.body.effectSelected, 1);
+        }
+        else {
+            console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
+            var response = '{"type":"intent","success":"false"}';
+        }
+    }
+
 
     // Client selects power off (for the LEDs)
     else if (type == "intent_off") {

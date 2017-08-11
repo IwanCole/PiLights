@@ -162,6 +162,7 @@ i.back {
 
 .errorContainer {
     display: none;
+    z-index: 4;
     margin-top: -280px;
     text-align: center;
     position: relative;

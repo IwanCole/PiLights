@@ -10,7 +10,7 @@ var create_colours = function() {
 
 var error_call = function(status) {
     var details = "Unfortunately an error has occurred. Please ";
-    if (status == 1 || status == 2) {
+    if (status == 1 || status == 2 || status == 3) {
         var errorTitle = "Error: Bad Auth";
         details += "refresh the page and login again.";
         var code = "CL0" + status;
@@ -22,6 +22,26 @@ var error_call = function(status) {
     $(".errorCover").fadeIn(400);
     $(".errorContainer").fadeIn(400);
 }
+
+var effects_intent = function() {
+   $(".effectCard").click(function () {
+        // var effect = $(this).children()[0].attr('class').replace("effectImg img", "");
+        var effect = $(this).children()[0]['className'].replace("effectImg img", "").toLowerCase();
+        // console.log($(this).children()[0]);
+        // alert(effect);
+        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_effect", effect_type: effect },
+            function(data, status){
+                var obj = jQuery.parseJSON(data);
+                console.log(obj.success);
+                if (obj.success == 1) {
+                    // update_colours(obj.colour);
+                    console.log("Do something when successful on effects");
+                } else {
+                    error_call(3);
+                }
+            });
+   })
+};
 
 var detailed_intent = function() {
     $(".detColourOpt").click(function () {
@@ -151,7 +171,7 @@ var navigation = function() {
         else if (section == "settingSection") { $(".settings").delay(400).fadeIn() }
         $(".back").fadeIn(200);
     });
-    
+
     $(".back").click(function() {
         $(".plainColours").fadeOut(400);
         $(".effectsColours").fadeOut(400);
@@ -177,6 +197,7 @@ var main = function() {
     get_uid();
     navigation();
     create_colours();
+    effects_intent();
     detailed_colours();
     colour_intent();
     power_intent();
