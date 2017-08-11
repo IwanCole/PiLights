@@ -67,7 +67,7 @@ i.lock {
     display: block;
     align-content: center;
 }
-.plainColours {
+.plainColours, .effectsColours {
     display: none;
 }
 .sectionCard {
@@ -252,6 +252,47 @@ p.colourText {
     display: inline-block;
     background-color: #fff;
     cursor: default;
+}
+.effectsColours {
+    align-content: center;
+}
+.effectCard {
+    overflow: hidden;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 30px;
+    border-radius: 8px;
+    background-color: #222222;
+}
+.effectCard > .sectionTitle {
+    margin-top: 10px;
+    font-size: 28px;
+    text-align: left;
+}
+.effectCard > .sectionDescription {
+    text-align: left;
+    width: 65%;
+    margin-left: 20px;
+}
+.effectImg {
+    display: inline-block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    float: right;
+    height: 130px;
+    width: 30%;
+}
+.imgFire {
+    background-image: url('media/fire.jpg');
+}
+.imgWater {
+    background-image: url('media/bubbles.jpg');
+}
+.imgTree {
+    background-image: url('media/forest.jpg');
 }
 
 /* For the LEDs

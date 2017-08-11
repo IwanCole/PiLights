@@ -22,6 +22,16 @@ def multi_print(string, lock):
     print(string)
     lock.release()
 
+# Test NeoPixel ring
+def start_pixel():
+    vals = [[255,0,0] ,[0,255,0], [0,0,255], [255,255,255]]
+    for val in vals:
+        for i in range(24):
+            xy = conv_coords(i)
+            uh.set_pixel(xy[0], xy[1], val[0], val[1], val[2])
+            uh.show()
+            time.sleep(0.02)
+    uh.off()
 
 # Convert HEX -> rbg e.g FFFFFF -> 255,255,255
 def hex_rgb(hexColour):
@@ -68,6 +78,7 @@ def pixel_listener(queue, lock):
 
 def pixel_lights(queue, lock):
     multi_print("Starting neopixel LEDs...", lock)
+    start_pixel()
     uh.brightness(1)
     while True:
         request = queue.get(True)
