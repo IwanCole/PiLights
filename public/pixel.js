@@ -36,6 +36,8 @@ var detailed_intent = function() {
                     error_call(1);
                 }
             });
+        $(".detailedCover").fadeOut(200);
+        $(".detailedColours").fadeOut(200);
     });
 };
 
