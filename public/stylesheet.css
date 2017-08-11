@@ -110,7 +110,7 @@ i.lock {
     margin-top: -45px;
     color: #fff;
     text-align: left;
-    margin-left: 20px;
+    padding-left: 20px;
 }
 .sectionDescription {
     margin: 15px;
@@ -258,32 +258,57 @@ p.colourText {
 }
 .effectCard {
     overflow: hidden;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
-    margin-top: 30px;
+    width: 180px;
+    height: 180px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    margin-top: 20px;
     border-radius: 8px;
     background-color: #222222;
 }
+.effectsColours > .subTitle {
+    margin-bottom: 10px;
+}
 .effectCard > .sectionTitle {
-    margin-top: 10px;
+    padding-top: 10px;
+    margin-top: -54px;
     font-size: 28px;
+    position: relative;
     text-align: left;
+    padding-left: 12px;
 }
 .effectCard > .sectionDescription {
     text-align: left;
     width: 65%;
-    margin-left: 20px;
+/*    margin-left: 20px;*/
+    padding-left: 20px;
+}
+.cardFire, .cardWater, .cardTree, .cardMulti {
+    height: 54px;
+    margin-top: -54px;
+    width: 100%;
+    opacity: 0.7;
+}
+.cardFire {
+    background-color: #410f06;
+}
+.cardWater {
+    background-color: #052839;
+}
+.cardTree {
+    background-color: #17340e;
+}
+.cardMulti {
+    background-color: #2e102f;
 }
 .effectImg {
-    display: inline-block;
+    display: block;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    float: right;
-    height: 130px;
-    width: 30%;
+    height: 180px;;
+    width: 180px;
 }
 .imgFire {
     background-image: url('media/fire.jpg');
@@ -293,6 +318,19 @@ p.colourText {
 }
 .imgTree {
     background-image: url('media/forest.jpg');
+}
+.imgMulti {
+    background-image: url('media/multi.jpg');
+}
+i.startEffect {
+    padding-top: 10px;
+    display: inline-block;
+    margin-top: -54px;
+    margin-right: 12px;
+    float: right;
+    position: relative;
+    color: #fff;
+    font-size: 36px;
 }
 
 /* For the LEDs
@@ -329,3 +367,4 @@ Orange	ffaa00
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
 }
+
