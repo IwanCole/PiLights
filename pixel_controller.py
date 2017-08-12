@@ -1,6 +1,6 @@
 from multiprocessing import Process, Queue, Lock
 import unicornhat as uh
-import sys, time, zmq, json
+import sys, time, zmq, json, effects
 
 # Convert co-ords to work with a 1*24 ring instead of a 8*8 matrix of LEDs
 def conv_coords( i ):
@@ -54,6 +54,12 @@ def set_pixels(hexColour):
     # except Exception as e: return e
 
 
+def pixel_effect(value):
+    if value == 000001:
+        effects.fire()
+    elif value == 000002:
+        effects.water()
+
 # Listen for requests coming from the pixel_handler (from node)
 def pixel_listener(queue, lock):
     context = zmq.Context()
@@ -62,7 +68,7 @@ def pixel_listener(queue, lock):
     multi_print("Listening on port 5555...", lock)
     while True:
         message = socket.recv()
-        print("Received request: \n" + message)
+        multi_print("Received request: \n" + message, lock)
         message = message.replace("u'","\"").replace("'","\"")
         reqObj = json.loads(message)
         # if (reqObj['iid'] != 0):
@@ -80,11 +86,27 @@ def pixel_lights(queue, lock):
     multi_print("Starting neopixel LEDs...", lock)
     start_pixel()
     uh.brightness(1)
+    effectInProgress = False
     while True:
         request = queue.get(True)
-        print(str(request['iid']) + " has requested " + request['value'])
-        print("WooHoo!")
-        set_pixels(request['value'])
+        if effectInProgress:
+            p3.terminate()
+            # uh.off()
+
+        value = request['value']
+        multi_print(str(request['iid']) + " has requested " + request['value'] + " of type " + str(request['type']), lock)
+        print(type(request['type']))
+        print request['type']
+        if int(request['type']) == 0:
+            multi_print("WooHoo!", lock)
+            set_pixels(request['value'])
+            multi_print("Woo222!", lock)
+
+        else:
+            p3 = Process(target=pixel_effect, args=(int(request['value']),))
+            effectInProgress = True
+            p3.start()
+
 
 
 
@@ -97,11 +119,11 @@ def main():
     p1 = Process(target=pixel_listener, args=(q, l))
     p2 = Process(target=pixel_lights, args=(q, l))
     p1.daemon = True
-    p2.daemon = True
+    # p2.daemon = True
     p1.start()
     p2.start()
     p1.join()
-
+    p2.join()
 
 if __name__ == "__main__":
     main()

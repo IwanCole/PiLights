@@ -57,7 +57,11 @@ var python_intent = function(userReq, type) {
     var newIntent = intents[intents.length - 1] + 1;
     intents.push(newIntent);
 
-    var packet = {"iid":newIntent, "value":pixelCode}
+    var packet = {"iid":newIntent, "type":type.toString(), "value":pixelCode}
+    // console.log("IOOOO: " + pixelCode);
+    // console.log(colourObj);
+    // console.log(userReq);
+    // console.log(colourObj['fire']);
 
     pyHandler.stdout.on("data", function(data) {
         pyOutput += data.toString();
@@ -163,7 +167,7 @@ app.post('/', function (req, res) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: " + req.body.effect_type);
             var effectSelected = req.body.effect_type;
             var response = '{"type":"intent","success":"' + valid + '","effect":"' + effectSelected + '"}';
-            python_intent(req.body.effectSelected, 1);
+            python_intent(effectSelected, 1);
         }
         else {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
@@ -178,7 +182,7 @@ app.post('/', function (req, res) {
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
             var response = '{"type":"intent","success":"' + valid + '"}';
-            python_intent("off");
+            python_intent("off", 0);
         }
         else {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF: BAD AUTH");
