@@ -49,7 +49,8 @@ def set_pixels(hexColour):
     for i in range(24):
         xy = conv_coords(i)
         uh.set_pixel(xy[0], xy[1], r, g, b)
-    uh.show()
+        uh.show()
+        time.sleep(0.02)
         # return True
     # except Exception as e: return e
 
