@@ -81,7 +81,10 @@ def pixel_listener(queue, lock):
             # TODO
 
 
-
+# Wait for a new request to appear on the queue. If it is a static colour (type 0)
+# then set the colour and wait for a new request. Effects have animations, which
+# require a while True loop to animate, so spawn a new process to handle the
+# animation, and terminate this process when a new request appears on the queue.
 def pixel_lights(queue, lock):
     multi_print("Starting neopixel LEDs...", lock)
     start_pixel()
@@ -90,22 +93,17 @@ def pixel_lights(queue, lock):
     while True:
         request = queue.get(True)
         if effectInProgress:
-            p3.terminate()
-            # uh.off()
+            procEffect.terminate()
 
-        value = request['value']
-        multi_print(str(request['iid']) + " has requested " + request['value'] + " of type " + str(request['type']), lock)
-        print(type(request['type']))
-        print request['type']
+        value = request['value'] # type String
+        multi_print(str(request['iid']) + " has requested " + value + " of type " + str(request['type']), lock)
+
         if int(request['type']) == 0:
-            multi_print("WooHoo!", lock)
-            set_pixels(request['value'])
-            multi_print("Woo222!", lock)
-
+            set_pixels(value)
         else:
-            p3 = Process(target=pixel_effect, args=(int(request['value']),))
+            procEffect = Process(target=pixel_effect, args=(int(value),))
             effectInProgress = True
-            p3.start()
+            procEffect.start()
 
 
 
@@ -116,14 +114,14 @@ def main():
     print("\n\n--- Pixel Controller ---")
     q = Queue()
     l = Lock()
-    p1 = Process(target=pixel_listener, args=(q, l))
-    p2 = Process(target=pixel_lights, args=(q, l))
-    p1.daemon = True
-    # p2.daemon = True
-    p1.start()
-    p2.start()
-    p1.join()
-    p2.join()
+    procListen = Process(target=pixel_listener, args=(q, l))
+    procLight = Process(target=pixel_lights, args=(q, l))
+    procListen.daemon = True
+    # procLight.daemon = True
+    procListen.start()
+    procLight.start()
+    procListen.join()
+    # procLight.join()
 
 if __name__ == "__main__":
     main()
