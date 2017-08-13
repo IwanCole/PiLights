@@ -67,8 +67,9 @@ i.lock {
     display: block;
     align-content: center;
 }
-.plainColours, .effectsColours {
+.plainColours, .effectsColours, .settings {
     display: none;
+    align-content: center;
 }
 .sectionCard {
     margin-left: auto;
@@ -254,9 +255,6 @@ p.colourText {
     background-color: #fff;
     cursor: default;
 }
-.effectsColours {
-    align-content: center;
-}
 .effectCard {
     overflow: hidden;
     width: 180px;
@@ -368,4 +366,3 @@ Orange	ffaa00
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
 }
-

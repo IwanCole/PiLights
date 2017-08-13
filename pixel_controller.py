@@ -2,6 +2,7 @@ from multiprocessing import Process, Queue, Lock
 import unicornhat as uh
 import sys, time, zmq, json, effects
 
+
 # Convert co-ords to work with a 1*24 ring instead of a 8*8 matrix of LEDs
 def conv_coords( i ):
     if i < 0:
@@ -56,13 +57,16 @@ def set_pixels(hexColour):
 
 
 def pixel_effect(value):
-    if value == 000001:
+    if value == "x1":
         effects.fire()
-    elif value == 000002:
+    elif value == "x2":
         effects.water()
 
 # Listen for requests coming from the pixel_handler (from node)
 def pixel_listener(queue, lock):
+    globalBrightness = 1.0
+    globalData = "000000"
+
     context = zmq.Context()
     socket = context.socket(zmq.REP)
     socket.bind("tcp://*:5555")
@@ -72,9 +76,18 @@ def pixel_listener(queue, lock):
         multi_print("Received request: \n" + message, lock)
         message = message.replace("u'","\"").replace("'","\"")
         reqObj = json.loads(message)
+        requestType = int(reqObj['type'])
         # if (reqObj['iid'] != 0):
-        queue.put(reqObj)
-        socket.send("Success")
+        if requestType != 3:
+            queue.put(reqObj)
+
+            if requestType == 0 or requestType == 1: globalData = str(reqObj['value'])
+            else: globalBrightness = float(reqObj['value'])
+
+            socket.send(str('{"success":"true","type":"'+ reqObj['type'] +'","data":"'+ reqObj['value'] +'"}'))
+        else:
+            socket.send(str('{"success":"true","type":"3","data":"'+ str(globalBrightness) +'"}'))
+
         # else:
             # (r, g, b) = uh.get_pixel(0,0)
             # currentHex = (str(hex(r)) + str(hex(g)) + str(hex(b))).replace("0x","")
@@ -102,7 +115,7 @@ def pixel_lights(queue, lock):
         if int(request['type']) == 0:
             set_pixels(value)
         else:
-            procEffect = Process(target=pixel_effect, args=(int(value),))
+            procEffect = Process(target=pixel_effect, args=(str(value),))
             effectInProgress = True
             procEffect.start()
 
