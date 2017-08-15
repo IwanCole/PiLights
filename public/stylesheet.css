@@ -331,18 +331,42 @@ i.startEffect {
     color: #fff;
     font-size: 36px;
 }
+.settingsCard {
+    background-color: #222222;
+    width: 90%;
+    overflow: hidden;
+    display: inline-block;
+    border-radius: 8px;
+    margin-top: 30px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.settingImg {
+    display: block;
+    width: 100%;
+    height: 130px;
+}
+.imgBright {
+    background-image: url('media/bright.jpg');
+}
+.settingFade {
+    background-color: rgba(13, 35, 56, 0.64);
+    align-content: center;
+}
+.settingFade > .sectionTitle {
+    margin: 110px 0px 10px 0px;
+    padding-top: 10px
+}
+i.brightnessToggle {
+    color: #ccc;
+    font-size: 38px;
+    margin: 0px 20px 10px 20px;
+}
+i.toggleActive {
+    color: #fff;
+}
 
-/* For the LEDs
-Red	ff0000
-Pink	ff00aa
-Purple	aa00ff
-Blue	0000ff
-L Blue	00aaff
-Cyan	00ffff
-Green	00ff00
-Yellow	ffff00
-Orange	ffaa00
-*/
 
 /*~~~~~~~~~~~ ALL ANIMATIONS ~~~~~~~~~~~*/
 @-webkit-keyframes authBad {

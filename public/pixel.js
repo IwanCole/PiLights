@@ -10,10 +10,14 @@ var create_colours = function() {
 
 var error_call = function(status) {
     var details = "Unfortunately an error has occurred. Please ";
-    if (status == 1 || status == 2 || status == 3) {
+    if (status == 1 || status == 2 || status == 3 || status == 4 || status == 5) {
         var errorTitle = "Error: Bad Auth";
         details += "refresh the page and login again.";
         var code = "CL0" + status;
+    } else if (status == 6) {
+        var errorTitle = "Error: Bad Response";
+        details += " try again, check the logs, or restart the server.";
+        var code = "SV0" + status;
     }
 
     $(".errorTitle").text(errorTitle);
@@ -133,7 +137,7 @@ var power_intent = function() {
                     error_call(2);
                 }
             });
-    })
+    });
 };
 
 var passcode_intent = function() {
@@ -146,7 +150,7 @@ var passcode_intent = function() {
         function(data, status){
             var obj = jQuery.parseJSON(data);
             console.log(obj.success);
-            if(obj.success == "true") {
+            if(obj.success == 1) {
                 $(".lockScreen").slideUp();
                 $(".content").delay(400).fadeIn();
                 Cookies.set("serverKey", obj.session);
@@ -162,13 +166,53 @@ var passcode_intent = function() {
     }
 };
 
+var update_brightness = function(level) {
+    $(".brightnessToggle").removeClass("toggleActive");
+    if (level == "0.3") {
+        $("._1").addClass("toggleActive");
+    } else if (level == "0.5") {
+        $("._2").addClass("toggleActive");
+    } else if (level == "0.7") {
+        $("._3").addClass("toggleActive");
+    } else if (level == "1.0") {
+        $("._4").addClass("toggleActive");
+    } else {
+        error_call(6);
+    }
+};
+
+var brightness_intent = function() {
+    $(".brightnessToggle").click(function() {
+        var level = $(this).attr("class").replace("material-icons brightnessToggle ","");
+        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_bright", level:level},
+            function(data, status){
+                get_brightness();
+            });
+    });
+};
+
+var get_brightness = function() {
+    $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "get_brightness"},
+        function(data, status){
+            var obj = jQuery.parseJSON(data);
+            if (obj.success == 1) {
+                update_brightness(obj.level);
+            } else {
+                error_call(5);
+            }
+        });
+};
+
 var navigation = function() {
     $(".sectionCard").click(function() {
         var section = $(this).attr('class').replace("sectionCard ","").replace(" noTouch", "");
         $(".splash").fadeOut();
         if (section == "simpleSection") { $(".plainColours").delay(400).fadeIn() }
         else if (section == "effectsSection") { $(".effectsColours").delay(400).fadeIn() }
-        else if (section == "settingSection") { $(".settings").delay(400).fadeIn() }
+        else if (section == "settingSection") {
+            $(".settings").delay(400).fadeIn();
+            get_brightness();
+        }
         $(".back").fadeIn(200);
     });
 
@@ -198,6 +242,7 @@ var main = function() {
     navigation();
     create_colours();
     effects_intent();
+    brightness_intent();
     detailed_colours();
     colour_intent();
     power_intent();

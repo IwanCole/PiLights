@@ -13,7 +13,7 @@ var UIDs = [0];                 // Used Unique IDs
 var intents = [0];              // Used intent IDs
 var UIDs_Auth = [];             // Auth'd UIDs (hashed)
 // var current_col = "000000";     // Current NeoPixel value
-global.globalBrightness = 1;
+global.globalBrightness = "1.0";
 
 var app = express();
 var staticPath = path.join(__dirname, '/public');
@@ -41,6 +41,10 @@ var python_intent = function(userReq, type) {
     var newIntent = intents[intents.length - 1] + 1;
     intents.push(newIntent);
 
+    if (type == 2) {
+        globalBrightness = pixelCode.replace("b","");
+    }
+
     var packet = {"iid":newIntent, "type":type.toString(), "value":pixelCode}
 
     pyHandler.stdout.on("data", function(data) {
@@ -48,6 +52,7 @@ var python_intent = function(userReq, type) {
     });
     pyHandler.stdout.on("end", function() {
         console.log("[SERVR] PyHandler res: " + pyOutput);
+
     });
     pyHandler.stdin.write(JSON.stringify(packet));
     pyHandler.stdin.end();
@@ -89,7 +94,6 @@ var valid_intent = function(UID, server_key) {
 
 // Periodically print the currently authenticated clients
 var server_sweep = function() {
-    python_intent("getBright", 3);
     console.log("\n[SERVR] Current Auth'd users: ");
     UIDs_Auth.forEach(function(value){
         console.log(value.substr(0,5));
@@ -114,8 +118,7 @@ app.post('/', function (req, res) {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT");
-            var response = '{"type":"get","success":"true","level":"' + globalBrightness + '"}';
-            python_intent("getBright", 3);
+            var response = '{"type":"get","success":1,"level":"' + globalBrightness + '"}';
         }
         else {
             console.log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT: BAD AUTH");
@@ -131,7 +134,7 @@ app.post('/', function (req, res) {
         console.log("[" + hashID.substr(0,5) + "] INTENT_AUTH: " + success);
         if (success == "true") {
             UIDs_Auth.push(hashID);
-            var response = '{"type":"intent","success":"true","session":"'+ session_key +'"}';
+            var response = '{"type":"intent","success":1,"session":"'+ session_key +'"}';
         } else {
             var response = '{"type":"intent","success":"false"}';
         }
@@ -143,7 +146,7 @@ app.post('/', function (req, res) {
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
-            var response = '{"type":"intent","success":"true","colour":"' + colourSelected + '"}';
+            var response = '{"type":"intent","success":1,"colour":"' + colourSelected + '"}';
             python_intent(req.body.colour, 0);
         }
         else {
@@ -157,7 +160,7 @@ app.post('/', function (req, res) {
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: " + req.body.effect_type);
             var effectSelected = req.body.effect_type;
-            var response = '{"type":"intent","success":"true","effect":"' + effectSelected + '"}';
+            var response = '{"type":"intent","success":1,"effect":"' + effectSelected + '"}';
             python_intent(effectSelected, 1);
         }
         else {
@@ -171,7 +174,8 @@ app.post('/', function (req, res) {
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_BRIGHT: " + req.body.level);
             var brightLevel = req.body.level;
-            var response = '{"type":"intent","success":"true","level":"' + brightLevel + '"}';
+            // globalBrightness = brightLevel;
+            var response = '{"type":"intent","success":1,"level":"' + brightLevel + '"}';
             python_intent(brightLevel, 2);
         }
         else {
@@ -186,7 +190,7 @@ app.post('/', function (req, res) {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
             console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
-            var response = '{"type":"intent","success":"true"}';
+            var response = '{"type":"intent","success":1}';
             python_intent("off", 0);
         }
         else {

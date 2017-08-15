@@ -42,6 +42,13 @@ def hex_rgb(hexColour):
     return (r, g, b)
 
 
+# Set the brightness of the LEDs
+def update_brightness(value):
+    newLevel = value.replace("b","")
+    uh.brightness(float(newLevel))
+    uh.show()
+
+
 # Send new colour to NeoPixel and display
 def set_pixels(hexColour):
     # Error handling: if for some reason UH fails, it doesn't crash everything
@@ -62,11 +69,9 @@ def pixel_effect(value):
     elif value == "x2":
         effects.water()
 
+
 # Listen for requests coming from the pixel_handler (from node)
 def pixel_listener(queue, lock):
-    globalBrightness = 1.0
-    globalData = "000000"
-
     context = zmq.Context()
     socket = context.socket(zmq.REP)
     socket.bind("tcp://*:5555")
@@ -77,22 +82,9 @@ def pixel_listener(queue, lock):
         message = message.replace("u'","\"").replace("'","\"")
         reqObj = json.loads(message)
         requestType = int(reqObj['type'])
-        # if (reqObj['iid'] != 0):
-        if requestType != 3:
-            queue.put(reqObj)
 
-            if requestType == 0 or requestType == 1: globalData = str(reqObj['value'])
-            else: globalBrightness = float(reqObj['value'])
-
-            socket.send(str('{"success":"true","type":"'+ reqObj['type'] +'","data":"'+ reqObj['value'] +'"}'))
-        else:
-            socket.send(str('{"success":"true","type":"3","data":"'+ str(globalBrightness) +'"}'))
-
-        # else:
-            # (r, g, b) = uh.get_pixel(0,0)
-            # currentHex = (str(hex(r)) + str(hex(g)) + str(hex(b))).replace("0x","")
-            # socket.send(currentHex)
-            # TODO
+        queue.put(reqObj)
+        socket.send(str('{"success":"true","type":"'+ reqObj['type'] +'","data":"'+ reqObj['value'] +'"}'))
 
 
 # Wait for a new request to appear on the queue. If it is a static colour (type 0)
@@ -114,13 +106,12 @@ def pixel_lights(queue, lock):
 
         if int(request['type']) == 0:
             set_pixels(value)
+        elif int(request['type']) == 2:
+            update_brightness(value)
         else:
             procEffect = Process(target=pixel_effect, args=(str(value),))
             effectInProgress = True
             procEffect.start()
-
-
-
 
 
 # Start the listener and manager, use a queue to communicate
@@ -131,11 +122,9 @@ def main():
     procListen = Process(target=pixel_listener, args=(q, l))
     procLight = Process(target=pixel_lights, args=(q, l))
     procListen.daemon = True
-    # procLight.daemon = True
     procListen.start()
     procLight.start()
     procListen.join()
-    # procLight.join()
 
 if __name__ == "__main__":
     main()
