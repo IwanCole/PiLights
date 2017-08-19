@@ -25,14 +25,14 @@ def multi_print(string, lock):
 
 # Test NeoPixel ring
 def start_pixel():
-    vals = [[255,0,0] ,[0,255,0], [0,0,255], [255,255,255]]
+    vals = [[255,0,0] ,[0,255,0], [0,0,255], [255,255,255], [0,0,0]]
     for val in vals:
         for i in range(24):
             xy = conv_coords(i)
             uh.set_pixel(xy[0], xy[1], val[0], val[1], val[2])
             uh.show()
             time.sleep(0.02)
-    uh.off()
+
 
 # Convert HEX -> rbg e.g FFFFFF -> 255,255,255
 def hex_rgb(hexColour):
@@ -68,6 +68,10 @@ def pixel_effect(value):
         effects.fire()
     elif value == "x2":
         effects.water()
+    elif value == "x4":
+        effects.rainbow()
+    elif value == "START":
+        effects.server_connected()
 
 
 # Listen for requests coming from the pixel_handler (from node)
@@ -108,6 +112,8 @@ def pixel_lights(queue, lock):
             set_pixels(value)
         elif int(request['type']) == 2:
             update_brightness(value)
+        elif int(request['type']) == 3:
+            pixel_effect(str(value))
         else:
             procEffect = Process(target=pixel_effect, args=(str(value),))
             effectInProgress = True

@@ -14,6 +14,45 @@ def conv_coords( i ):
     else:
         return [1, 7-(i%8)]
 
+def server_connected():
+    x = 255
+    for n in range(2):
+        for i in range(24):
+            for j in range(i+1):
+                xy = conv_coords(j)
+                uh.set_pixel(xy[0], xy[1], x, x, x)
+            xy = conv_coords(i)
+            uh.set_pixel(xy[0], xy[1], 0, 255, 0)
+            uh.show()
+            time.sleep(0.02)
+        x = 0
+    uh.off()
+
+
+def rainbow():
+    r, g, b = 255, 0, 0
+    inc = 0
+    x = 0
+    while True:
+        for i in range(24):
+            xy = conv_coords(i + x)
+            if (i % 8) in range(1,4): inc = 1
+            elif (i % 8) in range(5, 8): inc = 2
+            else: inc = 0
+            if i/8 == 0:
+                if inc == 1: g += 85
+                elif inc == 2: r -= 85
+            elif i/8 == 1:
+                if inc == 1: b += 85
+                elif inc == 2: g -= 85
+            elif i/8 == 2:
+                if inc == 1: r += 85
+                elif inc == 2: b -= 85
+            uh.set_pixel(xy[0], xy[1], r, g, b)
+        uh.show()
+        x += 1
+        time.sleep(0.07)
+    # uh.off()
 
 def fire():
     while True:

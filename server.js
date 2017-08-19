@@ -203,11 +203,11 @@ app.post('/', function (req, res) {
 })
 
 server_session();
-setInterval(server_sweep, 10000);
+setInterval(server_sweep, 60000);
 
 app.listen(8080, function() {
     console.log('Running on LAN ' + ip.address());
     console.log('Express HTTP server on listening on port 8080');
-    console.log('Server session_key: [ '+ session_key.substr(0,10) +'... ]')
-    console.log(globalBrightness);
+    console.log('Server session_key: [ '+ session_key.substr(0,10) +'... ]');
+    python_intent("serverStart", 3);
 });
