@@ -3,3 +3,4 @@ todo.txt
 anii.py
 *.bat
 *.pyc
+logs/*

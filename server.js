@@ -1,5 +1,3 @@
-console.log('\n\n--- Node Version: ' + process.version + ' ---');
-
 var fs = require('fs');
 var ip = require('ip');
 var path  = require('path');
@@ -14,6 +12,7 @@ var intents = [0];              // Used intent IDs
 var UIDs_Auth = [];             // Auth'd UIDs (hashed)
 // var current_col = "000000";     // Current NeoPixel value
 global.globalBrightness = "1.0";
+global.logName = "";
 
 var app = express();
 var staticPath = path.join(__dirname, '/public');
@@ -30,6 +29,24 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 var lookup_code = function(userReq) {
     var pixelCode = opcodes[userReq];
     return pixelCode;
+};
+
+
+var create_log = function() {
+    var d = new Date();
+    d.setSeconds(0,0);
+    logName = d.toISOString().replace(":00.000Z", "").replace("T", "_").replace(":", "");
+    logName = "logs/server/" + logName + ".log";
+};
+
+// Write all output to log file
+var write_log = function(text) {
+    console.log(text);
+    text.replace("\n", "\r\n");
+    text = "\r\n" + text;
+    fs.appendFile(logName, text, function(err) {
+      if (err) throw err;
+    });
 };
 
 
@@ -51,12 +68,13 @@ var python_intent = function(userReq, type) {
         pyOutput += data.toString();
     });
     pyHandler.stdout.on("end", function() {
-        console.log("[SERVR] PyHandler res: " + pyOutput);
+        write_log("[SERVR] PyHandler res: " + pyOutput);
 
     });
     pyHandler.stdin.write(JSON.stringify(packet));
     pyHandler.stdin.end();
 };
+
 
 // Simple hash, not used for security, used to track clients
 var make_hash = function(input) {
@@ -82,6 +100,7 @@ var valid_pass = function(user) {
     else { return false; }
 };
 
+
 // Validate incoming intent from client
 var valid_intent = function(UID, server_key) {
     var valid = false;
@@ -92,13 +111,18 @@ var valid_intent = function(UID, server_key) {
     return valid;
 };
 
+
 // Periodically print the currently authenticated clients
 var server_sweep = function() {
-    console.log("\n[SERVR] Current Auth'd users: ");
+    var d = new Date();
+    d.setSeconds(0,0);
+    var time = d.toISOString().replace(":00.000Z", "");
+    write_log("----------------\n" + time + "\n----------------\n[SERVR] Current Auth'd users: ");
     UIDs_Auth.forEach(function(value){
-        console.log(value.substr(0,5));
+        write_log("[" + value.substr(0,5) + "]");
     });
 };
+
 
 // POST method route
 app.post('/', function (req, res) {
@@ -111,17 +135,17 @@ app.post('/', function (req, res) {
         responseUID = make_hash(newID);
 
         var response = '{"type":"get","newID":"' + responseUID + '"}';
-        console.log("["+ responseUID.substr(0, 5) + "] GET_UID");
+        write_log("["+ responseUID.substr(0, 5) + "] GET_UID");
     }
 
     if (type == "get_brightness") {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
-            console.log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT");
+            write_log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT");
             var response = '{"type":"get","success":1,"level":"' + globalBrightness + '"}';
         }
         else {
-            console.log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT: BAD AUTH");
+            write_log("[" + req.body.id.substr(0,5) + "] GET_BRIGHT: BAD AUTH");
             var response = '{"type":"get","success":"false"}';
         }
     }
@@ -131,7 +155,7 @@ app.post('/', function (req, res) {
         var passHash = make_hash(req.body.passcode);
         var success = valid_pass(passHash).toString();
         var hashID = req.body.id;
-        console.log("[" + hashID.substr(0,5) + "] INTENT_AUTH: " + success);
+        write_log("[" + hashID.substr(0,5) + "] INTENT_AUTH: " + success);
         if (success == "true") {
             UIDs_Auth.push(hashID);
             var response = '{"type":"intent","success":1,"session":"'+ session_key +'"}';
@@ -144,13 +168,13 @@ app.post('/', function (req, res) {
     else if (type == "intent_colour") {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: " + req.body.colour);
             var colourSelected = req.body.colour;
             var response = '{"type":"intent","success":1,"colour":"' + colourSelected + '"}';
             python_intent(req.body.colour, 0);
         }
         else {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: BAD AUTH");
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_COLOUR: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
     }
@@ -158,13 +182,13 @@ app.post('/', function (req, res) {
     else if (type == "intent_effect") {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: " + req.body.effect_type);
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: " + req.body.effect_type);
             var effectSelected = req.body.effect_type;
             var response = '{"type":"intent","success":1,"effect":"' + effectSelected + '"}';
             python_intent(effectSelected, 1);
         }
         else {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
     }
@@ -172,14 +196,14 @@ app.post('/', function (req, res) {
     else if (type == "intent_bright") {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_BRIGHT: " + req.body.level);
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_BRIGHT: " + req.body.level);
             var brightLevel = req.body.level;
             // globalBrightness = brightLevel;
             var response = '{"type":"intent","success":1,"level":"' + brightLevel + '"}';
             python_intent(brightLevel, 2);
         }
         else {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_EFFECT: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
     }
@@ -189,12 +213,12 @@ app.post('/', function (req, res) {
     else if (type == "intent_off") {
         var valid = valid_intent(req.body.id, req.body.server_key);
         if (valid == true) {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_OFF");
             var response = '{"type":"intent","success":1}';
             python_intent("off", 0);
         }
         else {
-            console.log("[" + req.body.id.substr(0,5) + "] INTENT_OFF: BAD AUTH");
+            write_log("[" + req.body.id.substr(0,5) + "] INTENT_OFF: BAD AUTH");
             var response = '{"type":"intent","success":"false"}';
         }
     }
@@ -202,12 +226,14 @@ app.post('/', function (req, res) {
     res.send(response);
 })
 
+create_log();
+write_log('\n--- Node Version: ' + process.version + ' ---');
 server_session();
 setInterval(server_sweep, 60000);
 
 app.listen(8080, function() {
-    console.log('Running on LAN ' + ip.address());
-    console.log('Express HTTP server on listening on port 8080');
-    console.log('Server session_key: [ '+ session_key.substr(0,10) +'... ]');
+    write_log('Running on LAN ' + ip.address());
+    write_log('Express HTTP server on listening on port 8080');
+    write_log('Server session_key: [ '+ session_key.substr(0,10) +'... ]');
     python_intent("serverStart", 3);
 });
