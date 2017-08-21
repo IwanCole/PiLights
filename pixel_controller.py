@@ -44,8 +44,13 @@ def hex_rgb(hexColour):
 
 # Set the brightness of the LEDs
 def update_brightness(value):
-    newLevel = value.replace("b","")
-    uh.brightness(float(newLevel))
+    newLevel = float(value.replace("b",""))
+    increment = (uh.get_brightness() - newLevel) / 6
+    for i in range(6):
+        uh.brightness(uh.get_brightness() - increment)
+        uh.show()
+        time.sleep(0.02)
+    uh.brightness(newLevel)
     uh.show()
 
 
@@ -91,6 +96,13 @@ def pixel_listener(queue, lock):
         socket.send(str('{"success":"true","type":"'+ reqObj['type'] +'","data":"'+ reqObj['value'] +'"}'))
 
 
+
+def start_effect(effect):
+    procEffect = Process(target=pixel_effect, args=(effect,))
+    procEffect.start()
+    return procEffect, True
+
+
 # Wait for a new request to appear on the queue. If it is a static colour (type 0)
 # then set the colour and wait for a new request. Effects have animations, which
 # require a while True loop to animate, so spawn a new process to handle the
@@ -100,24 +112,32 @@ def pixel_lights(queue, lock):
     start_pixel()
     uh.brightness(1)
     effectInProgress = False
+    currentVal = "000000"
     while True:
         request = queue.get(True)
+        value = request['value'] # type String
+        reqType = int(request['type'])
+        multi_print(str(request['iid']) + " has requested " + value + " of type " + str(reqType), lock)
+
         if effectInProgress:
             procEffect.terminate()
+            effectInProgress = False
 
-        value = request['value'] # type String
-        multi_print(str(request['iid']) + " has requested " + value + " of type " + str(request['type']), lock)
-
-        if int(request['type']) == 0:
+        if reqType == 0:
+            currentVal = value
             set_pixels(value)
-        elif int(request['type']) == 2:
+        elif reqType == 2:
+            if currentVal[0] == "x": uh.clear()
             update_brightness(value)
-        elif int(request['type']) == 3:
-            pixel_effect(str(value))
+            if currentVal[0] == "x":
+                procEffect, effectInProgress = start_effect(currentVal)
+            else: set_pixels(currentVal)
+
+        elif reqType == 3:
+            pixel_effect(value)
         else:
-            procEffect = Process(target=pixel_effect, args=(str(value),))
-            effectInProgress = True
-            procEffect.start()
+            currentVal = value
+            procEffect, effectInProgress = start_effect(currentVal)
 
 
 # Start the listener and manager, use a queue to communicate
