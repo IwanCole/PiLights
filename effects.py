@@ -56,11 +56,12 @@ def rainbow():
 
 def fire():
     while True:
-        r, g, b = 255, 165, 40
+        r, g, b = 255, 125, 20
         xy = conv_coords(random.randint(0,23))
         rnd = random.randint(0, 150)
-        r1, g1, b1 = r-rnd, g-rnd, b-rnd
+        r1, g1, b1 = int(r-(0.7*rnd)), int(g-(0.9*rnd)), b-rnd
         if b1 < 0: b1 = 0
+        if g1 < 0: g1 = 0
         uh.set_pixel(xy[0], xy[1], r1, g1, b1)
         uh.show()
         time.sleep(random.uniform(0.01, 0.02))
