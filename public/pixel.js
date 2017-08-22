@@ -63,6 +63,10 @@ var detailed_intent = function() {
         $(".detailedCover").fadeOut(200);
         $(".detailedColours").fadeOut(200);
     });
+    $(".detBlank").click(function() {
+        $(".detailedCover").fadeOut(200);
+        $(".detailedColours").fadeOut(200);
+    });
 };
 
 var detailed_colours = function() {
@@ -74,22 +78,21 @@ var detailed_colours = function() {
             var startIndex = (jQuery.inArray(selection, colours)) * 4;
             var i = 0;
             while (i < 4) {
-                $(".detailedColours").append('<div class="detColourOpt ' + detColours[startIndex + i] + '"></div>');
-                if (i == 1) {
-                    $(".detailedColours").append('<div class="detColourOpt ' + selection + '"></div>');
-                }
-                i = i + 1;
+                var element = '<div class="detColourOpt ' + detColours[startIndex + i] + '"></div>';
+                var blank = '<div class="detBlank"></div>';
+                if ((i == 0) || (i == 3)) { element = blank + element + blank }
+                $(".detailedColours").append(element);
+                if (i == 1) { $(".detailedColours").append('<div class="detColourOpt ' + selection + '"></div>') }
+                i += 1;
             }
             detailed_intent();
             $(".detailedCover").fadeIn(200);
             $(".detailedColours").fadeIn(200);
         });
-
     $(".detailedCover").click(function() {
         $(".detailedCover").fadeOut(200);
         $(".detailedColours").fadeOut(200);
     });
-
 };
 
 var update_colours = function(colour) {
@@ -203,24 +206,36 @@ var get_brightness = function() {
         });
 };
 
+/* DEBUGGING code for tweaking CSS */
+var undo_error = function() {
+    $(".errorCover").fadeOut(200);
+    $(".errorContainer").fadeOut(200);
+};
+
+
 var navigation = function() {
+    /* DEBUGGING code for tweaking CSS */
+    $(".title").click(function() {
+       error_call(6);
+    });
+
     $(".sectionCard").click(function() {
         var section = $(this).attr('class').replace("sectionCard ","").replace(" noTouch", "");
         $(".splash").fadeOut();
-        if (section == "simpleSection") { $(".plainColours").delay(400).fadeIn() }
-        else if (section == "effectsSection") { $(".effectsColours").delay(400).fadeIn() }
+        if (section == "simpleSection") { $(".plainColours").delay(300).fadeIn() }
+        else if (section == "effectsSection") { $(".effectsColours").delay(300).fadeIn() }
         else if (section == "settingSection") {
-            $(".settings").delay(400).fadeIn();
+            $(".settings").delay(300).fadeIn();
             get_brightness();
         }
         $(".back").fadeIn(200);
     });
 
     $(".back").click(function() {
-        $(".plainColours").fadeOut(400);
-        $(".effectsColours").fadeOut(400);
-        $(".settings").fadeOut(400);
-        $(".splash").delay(400).fadeIn(400);
+        $(".plainColours").fadeOut(300);
+        $(".effectsColours").fadeOut(300);
+        $(".settings").fadeOut(300);
+        $(".splash").delay(300).fadeIn(300);
         $(".back").fadeOut(200);
     });
 };

@@ -37,13 +37,13 @@ button:focus {
 
 h1.lockTitle {
     color: #fff;
-    margin-top:90px;
+    margin-top: 20%;
     font-size: 58px;
 }
 input.authInput {
     color: #303030;
     font-size: 42px;
-    width: 220px;
+    width: 55%;
     border: none;
     box-shadow: none;
     text-align: center;
@@ -54,14 +54,14 @@ input.authInput {
     -moz-appearance:textfield !important;
 }
 i.lock {
-    margin-top: 70px;
+    margin-top: 15%;
     color: #fff;
     font-size: 54px;
 }
 .content {
     display: none;
     background-color: #3e3e3e;
-    padding-bottom: 80px;
+    padding-bottom: 20%;
 }
 .splash {
     display: block;
@@ -74,7 +74,7 @@ i.lock {
 .sectionCard {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 30px;
+    margin-top: 6%;
     border-radius: 8px;
     width: 90%;
     display: block;
@@ -111,10 +111,10 @@ i.lock {
     margin-top: -45px;
     color: #fff;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 5%;
 }
 .sectionDescription {
-    margin: 15px;
+    margin: 4%;
     color: #fff;
 }
 .titleBar, i.back {
@@ -131,7 +131,7 @@ i.lock {
 }
 i.power {
     display: block;
-    margin: 0px 15px 0px -50px;
+    margin: 0% 4% 0% -12%;
     color: #fff;
     float: right;
     font-size: 28px;
@@ -141,7 +141,7 @@ i.back {
     padding: 15px;
     left: 0;
     color: #fff;
-    margin: 0px -50px 0px 15px;
+    margin: 0px -12% 0px 4%;
     font-size: 28px;
     z-index: 2;
 }
@@ -155,18 +155,17 @@ i.back {
     color: #fff;
 }
 .subTitle {
-    width: 75%;
+    width: 90%;
     font-size: 26px;
     margin-left: auto;
     margin-right: auto;
 }
-
 .errorContainer {
     display: none;
     z-index: 4;
-    margin-top: -280px;
+    top: 20%;
     text-align: center;
-    position: relative;
+    position: absolute;
     margin-left: auto;
     margin-right: auto;
 }
@@ -196,37 +195,18 @@ i.back {
     overflow: auto;
     z-index: 3;
 }
-
 .errorCover, .detailedCover {
     display: none;
     z-index: 3;
 }
-
-
-p.colourText {
-    font-size: 26px;
-    margin: 8px;
-    text-align: center;
-    font-weight: bold;
-    color: #000;
-}
-
-/*span {
-    height: 90px;
-    display: block;
-}*/
 .colourContainer {
-    margin-left: auto;
-    margin-right: auto;
-    align-content: center;
-    width: 360px;
+    width: 100%;
     display: inline-block;
-/*    overflow: auto;*/
 }
 .colourOpt {
     width: 90px;
     height: 90px;
-    margin: 13px;
+    margin: 3%;
     border-radius: 45px;
     display: inline-block;
     background-color: #fff;
@@ -238,22 +218,28 @@ p.colourText {
 }
 .detailedColours {
     display: none;
-    width: 400px;
-    margin-top: -221px;
-    text-align: center;
-    position: relative;
+    width: 100%;
+    top: 15%;
     margin-left: auto;
     margin-right: auto;
+    position: absolute;
     z-index: 4;
 }
-.detColourOpt {
-    width: 70px;
-    height: 70px;
-    margin: 3px;
-    border-radius: 35px;
+.detColourOpt, .detBlank {
+    width: 85px;
+    height: 85px;
+    margin: 4%;
     display: inline-block;
-    background-color: #fff;
     cursor: default;
+}
+.detColourOpt {
+    border-radius: 42.5px;
+    background-color: #fff;
+}
+@media screen and (max-width: 350px) {
+    .colourOpt, .detColourOpt, .detBlank {
+        margin: 2%;
+    }
 }
 .effectCard {
     overflow: hidden;
@@ -359,14 +345,13 @@ i.startEffect {
     padding-top: 10px
 }
 i.brightnessToggle {
-    color: #ccc;
+    color: #aaa;
     font-size: 38px;
-    margin: 0px 20px 10px 20px;
+    margin: 0px 5% 10px 5%;
 }
 i.toggleActive {
     color: #fff;
 }
-
 
 /*~~~~~~~~~~~ ALL ANIMATIONS ~~~~~~~~~~~*/
 @-webkit-keyframes authBad {
