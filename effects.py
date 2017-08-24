@@ -51,6 +51,7 @@ def rainbow():
             uh.set_pixel(xy[0], xy[1], r, g, b)
         uh.show()
         x += 1
+        if x == 24: x = 0
         time.sleep(0.07)
     # uh.off()
 
