@@ -1,4 +1,6 @@
 var colours = ["red", "pink", "purple", "blue", "lblue", "cyan", "green", "yellow", "orange"];
+// Don't hate me (:
+var detColours = ["or3", "or4", "rp1", "rp2", "rp3", "rp4", "pp1", "pp2", "pp3", "pp4", "pb1", "pb2", "pb3", "pb4", "bl1", "bl2", "bl3", "bl4", "lc1", "lc2", "lc3", "lc4", "cg1", "cg2", "cg3", "cg4", "gy1", "gy2", "gy3", "gy4", "yo1", "yo2", "yo3", "yo4", "or1", "or2"];
 
 var create_colours = function() {
     var i = 0;
@@ -72,8 +74,6 @@ var detailed_intent = function() {
 var detailed_colours = function() {
     $('.colourOpt').on('press', function(e) {
             $(".detailedColours").empty();
-            // Don't hate me (:
-            var detColours = ["or3", "or4", "rp1", "rp2", "rp3", "rp4", "pp1", "pp2", "pp3", "pp4", "pb1", "pb2", "pb3", "pb4", "bl1", "bl2", "bl3", "bl4", "lc1", "lc2", "lc3", "lc4", "cg1", "cg2", "cg3", "cg4", "gy1", "gy2", "gy3", "gy4", "yo1", "yo2", "yo3", "yo4", "or1", "or2"];
             var selection = $(this).attr('class').replace("colourOpt ","");
             var startIndex = (jQuery.inArray(selection, colours)) * 4;
             var i = 0;
@@ -212,31 +212,57 @@ var undo_error = function() {
     $(".errorContainer").fadeOut(200);
 };
 
+var set_loc = function(location) {
+    Cookies.set("loc", location);  
+};
 
 var navigation = function() {
     /* DEBUGGING code for tweaking CSS */
-    $(".title").click(function() {
-       error_call(6);
-    });
-
+//    $(".title").click(function() {
+//       error_call(6);
+//    });
+    set_loc("splash");
+    
     $(".sectionCard").click(function() {
         var section = $(this).attr('class').replace("sectionCard ","").replace(" noTouch", "");
-        $(".splash").fadeOut();
-        if (section == "simpleSection") { $(".plainColours").delay(300).fadeIn() }
-        else if (section == "effectsSection") { $(".effectsColours").delay(300).fadeIn() }
+        $(".splash").fadeOut(300);
+        if (section == "simpleSection") { 
+            $(".plainColours").delay(300).fadeIn(300);
+            set_loc("plainColours");
+        }
+        else if (section == "effectsSection") { 
+            $(".effectsColours").delay(300).fadeIn(300);
+            set_loc("effectsColours");
+        }
         else if (section == "settingSection") {
             $(".settings").delay(300).fadeIn();
+            set_loc("settingSection");
             get_brightness();
         }
         $(".back").fadeIn(200);
     });
-
-    $(".back").click(function() {
+    
+    $(".navAllColours").click(function() {
+        set_loc("allColours");
         $(".plainColours").fadeOut(300);
-        $(".effectsColours").fadeOut(300);
-        $(".settings").fadeOut(300);
-        $(".splash").delay(300).fadeIn(300);
-        $(".back").fadeOut(200);
+        $(".allColours").delay(300).fadeIn(300);
+    });
+    
+    $(".back").click(function() {
+        $("." + Cookies.get("loc")).fadeOut(300);
+        if (Cookies.get("loc") == "allColours") {
+            set_loc("plainColours");
+            
+        } 
+        else {
+            set_loc("splash");
+    //        $(".plainColours").fadeOut(300);
+    //        $(".effectsColours").fadeOut(300);
+    //        $(".settings").fadeOut(300);
+            
+            $(".back").fadeOut(200);
+        }
+        $("." + Cookies.get("loc")).delay(300).fadeIn(300);
     });
 };
 
