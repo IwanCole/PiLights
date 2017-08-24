@@ -8,6 +8,16 @@ var create_colours = function() {
         $(".colourContainer").append('<div class="colourOpt ' + colours[i] + '"></div>');
         i = i + 1;
     }
+    
+    var j = 0, k = 0;
+    while (j < 36) {
+        $(".allColours").append('<div class="allColourOpt ' + detColours[j] + '"></div>');
+        if ((j % 4) == 1) {
+            $(".allColours").append('<div class="allColourOpt ' + colours[k] + '"></div>');
+            k += 1;
+        }
+        j += 1;
+    }
 };
 
 var error_call = function(status) {
@@ -112,21 +122,28 @@ var update_colours = function(colour) {
     $(".titleBar").attr('class', newClassName);
 };
 
-var colour_intent = function() {
+var colour_intent = function(colourRequest) {
+    $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_colour", colour: colourRequest },
+        function(data, status){
+            var obj = jQuery.parseJSON(data);
+            console.log(obj.success);
+            if (obj.success == 1) {
+                update_colours(obj.colour);
+            } else {
+                error_call(1);
+            }
+        });
+};
+
+var colour_intent_binder = function() {
     $(".colourOpt").click(function () {
         var colourRequest = $(this).attr('class').replace("colourOpt ", "");
-        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_colour", colour: colourRequest },
-            function(data, status){
-                var obj = jQuery.parseJSON(data);
-                console.log(obj.success);
-                if (obj.success == 1) {
-                    update_colours(obj.colour);
-                } else {
-                    error_call(1);
-                }
-            });
+        colour_intent(colourRequest);
     });
-
+    $(".allColourOpt").click(function () {
+        var colourRequest = $(this).attr('class').replace("allColourOpt ", "");
+        colour_intent(colourRequest);
+    });
 };
 
 var power_intent = function() {
@@ -252,14 +269,9 @@ var navigation = function() {
         $("." + Cookies.get("loc")).fadeOut(300);
         if (Cookies.get("loc") == "allColours") {
             set_loc("plainColours");
-            
         } 
         else {
             set_loc("splash");
-    //        $(".plainColours").fadeOut(300);
-    //        $(".effectsColours").fadeOut(300);
-    //        $(".settings").fadeOut(300);
-            
             $(".back").fadeOut(200);
         }
         $("." + Cookies.get("loc")).delay(300).fadeIn(300);
@@ -285,7 +297,7 @@ var main = function() {
     effects_intent();
     brightness_intent();
     detailed_colours();
-    colour_intent();
+    colour_intent_binder();
     power_intent();
 
 

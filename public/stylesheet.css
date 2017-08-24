@@ -61,13 +61,13 @@ i.lock {
 .content {
     display: none;
     background-color: #3e3e3e;
-    padding-bottom: 20%;
+    padding-bottom: 58px;
 }
 .splash {
     display: block;
     align-content: center;
 }
-.plainColours, .effectsColours, .settings {
+.plainColours, .allColours, .effectsColours, .settings {
     display: none;
     align-content: center;
 }
@@ -241,6 +241,14 @@ i.back {
         margin: 2%;
     }
 }
+.allColourOpt {
+    width: 100%;
+    display: block;
+    height: 100px;
+    margin: 0px;
+    border-radius: 0px;
+}
+
 .effectCard {
     overflow: hidden;
     width: 180px;
