@@ -253,7 +253,7 @@ var navigation = function() {
         }
         else if (section == "settingSection") {
             $(".settings").delay(300).fadeIn();
-            set_loc("settingSection");
+            set_loc("settings");
             get_brightness();
         }
         $(".back").fadeIn(200);

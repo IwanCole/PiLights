@@ -37,8 +37,11 @@ button:focus {
 
 h1.lockTitle {
     color: #fff;
-    margin-top: 20%;
+    margin-top: 100px;
     font-size: 58px;
+}
+@media screen and (max-width: 550px) {
+    h1.lockTitle { margin-top: 20%; }
 }
 input.authInput {
     color: #303030;
@@ -74,7 +77,7 @@ i.lock {
 .sectionCard {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 6%;
+    margin-top: 30px;
     border-radius: 8px;
     width: 90%;
     display: block;
@@ -88,6 +91,7 @@ i.lock {
 }
 .settingSection {
     background-color: #222222;
+    margin-bottom: 30px;
 }
 .sectionImg {
     height: 130px;
@@ -114,7 +118,7 @@ i.lock {
     padding-left: 5%;
 }
 .sectionDescription {
-    margin: 4%;
+    margin: 15px;
     color: #fff;
 }
 .titleBar, i.back {
@@ -237,9 +241,7 @@ i.back {
     background-color: #fff;
 }
 @media screen and (max-width: 350px) {
-    .colourOpt, .detColourOpt, .detBlank {
-        margin: 2%;
-    }
+    .colourOpt, .detColourOpt, .detBlank { margin: 2%; }
 }
 .allColourOpt {
     width: 100%;
