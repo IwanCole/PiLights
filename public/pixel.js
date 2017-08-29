@@ -59,6 +59,12 @@ var effects_intent = function() {
    })
 };
 
+var colour_reset = function() {
+    $(".colourContainer").fadeTo(200, 1);
+    $(".detailedCover").fadeOut(200);
+    $(".detailedColours").fadeOut(200);
+}
+
 var detailed_intent = function() {
     $(".detColourOpt").click(function () {
         var colourRequest = $(this).attr('class').replace("detColourOpt ", "");
@@ -72,36 +78,35 @@ var detailed_intent = function() {
                     error_call(1);
                 }
             });
-        $(".detailedCover").fadeOut(200);
-        $(".detailedColours").fadeOut(200);
+        colour_reset();
     });
     $(".detBlank").click(function() {
-        $(".detailedCover").fadeOut(200);
-        $(".detailedColours").fadeOut(200);
+        colour_reset();
     });
 };
 
 var detailed_colours = function() {
     $('.colourOpt').on('press', function(e) {
-            $(".detailedColours").empty();
-            var selection = $(this).attr('class').replace("colourOpt ","");
-            var startIndex = (jQuery.inArray(selection, colours)) * 4;
-            var i = 0;
-            while (i < 4) {
-                var element = '<div class="detColourOpt ' + detColours[startIndex + i] + '"></div>';
-                var blank = '<div class="detBlank"></div>';
-                if ((i == 0) || (i == 3)) { element = blank + element + blank }
-                $(".detailedColours").append(element);
-                if (i == 1) { $(".detailedColours").append('<div class="detColourOpt ' + selection + '"></div>') }
-                i += 1;
-            }
-            detailed_intent();
-            $(".detailedCover").fadeIn(200);
-            $(".detailedColours").fadeIn(200);
-        });
+        $(".detailedColours").css("top",($(".colourContainer").offset().top));
+        $(".detailedColours").empty();
+        var selection = $(this).attr('class').replace("colourOpt ","");
+        var startIndex = (jQuery.inArray(selection, colours)) * 4;
+        var i = 0;
+        while (i < 4) {
+            var element = '<div class="detColourOpt ' + detColours[startIndex + i] + '"></div>';
+            var blank = '<div class="detBlank"></div>';
+            if ((i == 0) || (i == 3)) { element = blank + element + blank }
+            $(".detailedColours").append(element);
+            if (i == 1) { $(".detailedColours").append('<div class="detColourOpt ' + selection + '"></div>') }
+            i += 1;
+        }
+        detailed_intent();
+        $(".colourContainer").fadeTo(200, 0);
+        $(".detailedCover").fadeIn(200);
+        $(".detailedColours").fadeIn(200);
+    });
     $(".detailedCover").click(function() {
-        $(".detailedCover").fadeOut(200);
-        $(".detailedColours").fadeOut(200);
+        colour_reset();
     });
 };
 

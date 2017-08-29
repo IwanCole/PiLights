@@ -207,13 +207,12 @@ i.back {
     width: 100%;
     display: inline-block;
 }
-.colourOpt {
+.colourOpt, .detColourOpt, .detBlank {
     width: 90px;
     height: 90px;
     margin: 3%;
     border-radius: 45px;
     display: inline-block;
-    background-color: #fff;
     cursor: default;
 }
 .detailedCover {
@@ -223,22 +222,10 @@ i.back {
 .detailedColours {
     display: none;
     width: 100%;
-    top: 15%;
     margin-left: auto;
     margin-right: auto;
     position: absolute;
     z-index: 4;
-}
-.detColourOpt, .detBlank {
-    width: 85px;
-    height: 85px;
-    margin: 4%;
-    display: inline-block;
-    cursor: default;
-}
-.detColourOpt {
-    border-radius: 42.5px;
-    background-color: #fff;
 }
 @media screen and (max-width: 350px) {
     .colourOpt, .detColourOpt, .detBlank { margin: 2%; }
@@ -250,7 +237,6 @@ i.back {
     margin: 0px;
     border-radius: 0px;
 }
-
 .effectCard {
     overflow: hidden;
     width: 180px;
