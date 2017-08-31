@@ -10,11 +10,11 @@ def conv_coords( i ):
     elif i >= 24:
         return conv_coords(i - 24)
     elif i in range(8):
-        return [0, i]
+        return (0, i)
     elif i >= 16:
-        return [2, (i%8)]
+        return (2, (i%8))
     else:
-        return [1, 7-(i%8)]
+        return (1, 7-(i%8))
 
 
 # Print without overlap
@@ -28,18 +28,10 @@ def start_pixel():
     vals = [[255,0,0] ,[0,255,0], [0,0,255], [255,255,255], [0,0,0]]
     for val in vals:
         for i in range(24):
-            xy = conv_coords(i)
-            uh.set_pixel(xy[0], xy[1], val[0], val[1], val[2])
+            (x, y) = conv_coords(i)
+            uh.set_pixel(x, y, val[0], val[1], val[2])
             uh.show()
             time.sleep(0.02)
-
-
-# Convert HEX -> rbg e.g FFFFFF -> 255,255,255
-def hex_rgb(hexColour):
-    r = int(hexColour[0:2], 16)
-    g = int(hexColour[2:4], 16)
-    b = int(hexColour[4:6], 16)
-    return (r, g, b)
 
 
 # Set the brightness of the LEDs
@@ -58,10 +50,10 @@ def update_brightness(value):
 def set_pixels(hexColour):
     # Error handling: if for some reason UH fails, it doesn't crash everything
     # try:
-    (r, g, b) = hex_rgb(hexColour)
+    (r, g, b) = efects.hex_rgb(hexColour)
     for i in range(24):
-        xy = conv_coords(i)
-        uh.set_pixel(xy[0], xy[1], r, g, b)
+        (x, y) = conv_coords(i)
+        uh.set_pixel(x, y, r, g, b)
         uh.show()
         time.sleep(0.02)
         # return True
@@ -73,6 +65,8 @@ def pixel_effect(value):
         effects.fire()
     elif value == "x2":
         effects.water()
+    elif value == "x3":
+        effects.tree()
     elif value == "x4":
         effects.rainbow()
     elif value == "START":
@@ -94,7 +88,6 @@ def pixel_listener(queue, lock):
 
         queue.put(reqObj)
         socket.send(str('{"success":"true","type":"'+ reqObj['type'] +'","data":"'+ reqObj['value'] +'"}'))
-
 
 
 def start_effect(effect):
