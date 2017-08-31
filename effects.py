@@ -1,6 +1,5 @@
 import unicornhat as uh
-import random
-import time
+import random, time
 
 def conv_coords( i ):
     if i < 0:
@@ -13,6 +12,23 @@ def conv_coords( i ):
         return [2, (i%8)]
     else:
         return [1, 7-(i%8)]
+
+
+def hex_rgb(hexColour):
+    r = int(hexColour[0:2], 16)
+    g = int(hexColour[2:4], 16)
+    b = int(hexColour[4:6], 16)
+    return (r, g, b)
+
+
+def rgb_hex(r, g, b):
+    preHex = [hex(r).replace("0x",""), hex(g).replace("0x",""), hex(b).replace("0x","")]
+    outHex = ""
+    for i in range(3):
+        if len(preHex[i]) == 1: outHex += ("0" + preHex[i])
+        else: outHex += preHex[i]
+    return outHex
+
 
 def server_connected():
     x = 255
@@ -29,10 +45,25 @@ def server_connected():
     uh.off()
 
 
+def rainbow_hue():
+    col = [255, 0, 0]
+    target, change = 1, 1
+    while True:
+        for i in range(24):
+            xy = conv_coords(i)
+            uh.set_pixel(xy[0], xy[1], col[0], col[1], col[2])
+        col[target] += change * 4
+        if col[target] == -1 or col[target] == 256: col[target] -= change
+        if col[target] in [0, 255]:
+            target = (target - 1) % 3
+            change *= -1
+        uh.show()
+        time.sleep(0.03)
+
+
 def rainbow():
     r, g, b = 255, 0, 0
-    inc = 0
-    x = 0
+    inc, x = 0, 0
     while True:
         for i in range(24):
             xy = conv_coords(i + x)
@@ -53,7 +84,7 @@ def rainbow():
         x += 1
         if x == 24: x = 0
         time.sleep(0.07)
-    # uh.off()
+
 
 def fire():
     while True:
@@ -84,6 +115,27 @@ def water():
                 uh.set_pixel(xy2[0], xy2[1], 30, 120-(k*15), 255-(k*20))
             uh.show()
             time.sleep(random.uniform(0.06, 0.11))
+
+
+def tree():
+    vals = ['00ff33', '00ff22', '00ff16', '00ff11', '00ff06', '06ff06', '00ff00', '06ff00', '11ff00', '16ff00', '22ff00', '33ff00', '44ff00', '55ff00', '66ff00', '99ff00', 'ddff00']
+    for j in range(24):
+        xy = conv_coords(j)
+        (r, g, b) = hex_rgb(vals[random.randint(0,len(vals)-1)])
+        uh.set_pixel(xy[0], xy[1], r, g, b)
+        uh.show()
+        time.sleep(0.01)
+
+    while True:
+        for i in range(24):
+            xy = conv_coords(i)
+            (r, g, b) = uh.get_pixel(xy[0], xy[1])
+            oldHex = rgb_hex(r, g, b)
+            newHex = vals[(vals.index(oldHex) + 1) % len(vals)]
+            (r, g, b) = hex_rgb(newHex)
+            uh.set_pixel(xy[0], xy[1], r, g, b)
+        uh.show()
+        time.sleep(0.07)
 
 
 def main():
