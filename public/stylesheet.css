@@ -101,11 +101,11 @@ i.lock {
     background-repeat: no-repeat;    
 }
 .simpleSectionImg {
-    background-image: url('media/rainbow.jpg');
+    background-image: url('media/lights.jpg');
     background-position: bottom;
 }
 .effectsSectionImg {
-    background-image: url('media/water.jpg');
+    background-image: url('media/under.jpg');
     background-position: bottom;
 }
 .settingSectionImg {

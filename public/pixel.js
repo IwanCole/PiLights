@@ -20,6 +20,11 @@ var create_colours = function() {
     }
 };
 
+var create_effects = function() {
+    effectTitles = ["Fire", "Multi", "Water", "Forest"];
+    
+};
+
 var error_call = function(status) {
     var details = "Unfortunately an error has occurred. Please ";
     if (status == 1 || status == 2 || status == 3 || status == 4 || status == 5) {
@@ -58,6 +63,25 @@ var effects_intent = function() {
             });
    })
 };
+
+var effect_reset = function() {
+    $(".effectPreview").slideUp();
+    $(".effectCover").fadeOut();
+}
+
+var effect_peek = function() {
+    $(".effectRing").click(function() {
+        var effect = $(this).children()[0]['innerHTML'];
+        $(".effectCard > .sectionTitle").text(effect);
+        var newImage = "url('media/" + effect.toLowerCase() + ".jpg')"
+        $(".effectPreview").css("background-image", newImage);
+        $(".effectPreview").slideDown();
+        $(".effectCover").fadeIn();
+    });
+    $(".effectCover").click(function() {
+        effect_reset();
+    });
+}
 
 var colour_reset = function() {
     $(".colourContainer").fadeTo(200, 1);
@@ -254,6 +278,7 @@ var navigation = function() {
         }
         else if (section == "effectsSection") { 
             $(".effectsColours").delay(300).fadeIn(300);
+            $("html").css("background-color", "#222");
             set_loc("effectsColours");
         }
         else if (section == "settingSection") {
@@ -268,12 +293,15 @@ var navigation = function() {
         set_loc("allColours");
         $(".plainColours").fadeOut(300);
         $(".allColours").delay(300).fadeIn(300);
+        $(".allColourOpt").addClass("animate_colourSlideUp");
     });
     
     $(".back").click(function() {
+        $("html").css("background-color", "#3e3e3e");
         $("." + Cookies.get("loc")).fadeOut(300);
         if (Cookies.get("loc") == "allColours") {
             set_loc("plainColours");
+            $(".animate_slideColourUp").removeClass("animate_colourSlideUp");
         } 
         else {
             set_loc("splash");
@@ -299,6 +327,7 @@ var main = function() {
     get_uid();
     navigation();
     create_colours();
+    effect_peek();
     effects_intent();
     brightness_intent();
     detailed_colours();
