@@ -8,7 +8,7 @@ var create_colours = function() {
         $(".colourContainer").append('<div class="colourOpt ' + colours[i] + '"></div>');
         i = i + 1;
     }
-    
+
     var j = 0, k = 0;
     while (j < 36) {
         $(".allColours").append('<div class="allColourOpt ' + detColours[j] + '"></div>');
@@ -20,10 +20,10 @@ var create_colours = function() {
     }
 };
 
-var create_effects = function() {
-    effectTitles = ["Fire", "Multi", "Water", "Forest"];
-    
-};
+// var create_effects = function() {
+//     effectTitles = ["Fire", "Multi", "Water", "Forest"];
+//
+// };
 
 var error_call = function(status) {
     var details = "Unfortunately an error has occurred. Please ";
@@ -35,39 +35,41 @@ var error_call = function(status) {
         var errorTitle = "Error: Bad Response";
         details += " try again, check the logs, or restart the server.";
         var code = "SV0" + status;
+    } else if (status == 7) {
+        var errorTitle = "Error: Server Down"
+        details += " check the Raspberry Pi is online, or SSH in to see if NodeJS has crashed.";
+        var code = "SV0" + status;
     }
-
     $(".errorTitle").text(errorTitle);
     $(".errorDetails").text(details);
     $(".errorCode").text(code);
     $(".errorCover").fadeIn(400);
     $(".errorContainer").fadeIn(400);
-}
-
-var effects_intent = function() {
-   $(".effectCard").click(function () {
-        // var effect = $(this).children()[0].attr('class').replace("effectImg img", "");
-        var effect = $(this).children()[0]['className'].replace("effectImg img", "").toLowerCase();
-        // console.log($(this).children()[0]);
-        // alert(effect);
-        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_effect", effect_type: effect },
-            function(data, status){
-                var obj = jQuery.parseJSON(data);
-                console.log(obj.success);
-                if (obj.success == 1) {
-                    // update_colours(obj.colour);
-                    console.log("Do something when successful on effects");
-                } else {
-                    error_call(3);
-                }
-            });
-   })
 };
 
 var effect_reset = function() {
     $(".effectPreview").slideUp();
     $(".effectCover").fadeOut();
-}
+};
+
+var effect_active = function(newEffect) {
+    update_colours("off");
+    $(".ring" + newEffect).addClass("ringActive");
+};
+
+var effects_intent = function(effectSelected) {
+    var effect = effectSelected.toLowerCase();
+    $(".effectFAB").off("click"); // Unbind previous listener
+    $(".effectFAB").click(function () {
+        $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_effect", effect_type: effect },
+            function(data, status){
+                var obj = jQuery.parseJSON(data);
+                if (obj.success == 1) { effect_active(effectSelected) }
+                else { error_call(3) }
+            }).fail(function () { error_call(7) });
+        effect_reset();
+   });
+};
 
 var effect_peek = function() {
     $(".effectRing").click(function() {
@@ -77,17 +79,18 @@ var effect_peek = function() {
         $(".effectPreview").css("background-image", newImage);
         $(".effectPreview").slideDown();
         $(".effectCover").fadeIn();
+        effects_intent(effect);
     });
     $(".effectCover").click(function() {
         effect_reset();
     });
-}
+};
 
 var colour_reset = function() {
     $(".colourContainer").fadeTo(200, 1);
     $(".detailedCover").fadeOut(200);
     $(".detailedColours").fadeOut(200);
-}
+};
 
 var detailed_intent = function() {
     $(".detColourOpt").click(function () {
@@ -96,12 +99,9 @@ var detailed_intent = function() {
             function(data, status){
                 var obj = jQuery.parseJSON(data);
                 console.log(obj.success);
-                if (obj.success == 1) {
-                    update_colours(obj.colour);
-                } else {
-                    error_call(1);
-                }
-            });
+                if (obj.success == 1) { update_colours(obj.colour) }
+                else { error_call(1) }
+            }).fail(function () { error_call(7) });
         colour_reset();
     });
     $(".detBlank").click(function() {
@@ -135,10 +135,10 @@ var detailed_colours = function() {
 };
 
 var update_colours = function(colour) {
+    $(".ringActive").removeClass("ringActive");
     $('meta[name=theme-color]').remove();
     if (colour != "off") {
         var newClassName = "titleBar noTouch " + colour;
-
         var $temp = $('<span class="' + colour + '"></span>"').hide().appendTo("body");
         var hexVal = $temp.css("background-color");
         $temp.remove();
@@ -156,12 +156,9 @@ var colour_intent = function(colourRequest) {
         function(data, status){
             var obj = jQuery.parseJSON(data);
             console.log(obj.success);
-            if (obj.success == 1) {
-                update_colours(obj.colour);
-            } else {
-                error_call(1);
-            }
-        });
+            if (obj.success == 1) { update_colours(obj.colour) }
+            else { error_call(1) }
+        }).fail(function () { error_call(7) });
 };
 
 var colour_intent_binder = function() {
@@ -180,12 +177,9 @@ var power_intent = function() {
         $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_off"},
             function(data, status){
                 var obj = jQuery.parseJSON(data);
-                if (obj.success == 1) {
-                    update_colours("off");
-                } else {
-                    error_call(2);
-                }
-            });
+                if (obj.success == 1) { update_colours("off") }
+                else { error_call(2) }
+            }).fail(function () { error_call(7) });
     });
 };
 
@@ -211,7 +205,7 @@ var passcode_intent = function() {
                 $(".authInput").prop('disabled', false);
                 $(".authInput").focus();
             }
-        });
+        }).fail(function () { error_call(7) });
     }
 };
 
@@ -236,7 +230,7 @@ var brightness_intent = function() {
         $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_bright", level:level},
             function(data, status){
                 get_brightness();
-            });
+            }).fail(function () { error_call(7) });
     });
 };
 
@@ -244,39 +238,26 @@ var get_brightness = function() {
     $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "get_brightness"},
         function(data, status){
             var obj = jQuery.parseJSON(data);
-            if (obj.success == 1) {
-                update_brightness(obj.level);
-            } else {
-                error_call(5);
-            }
-        });
-};
-
-/* DEBUGGING code for tweaking CSS */
-var undo_error = function() {
-    $(".errorCover").fadeOut(200);
-    $(".errorContainer").fadeOut(200);
+            if (obj.success == 1) { update_brightness(obj.level) }
+            else { error_call(5) }
+        }).fail(function () { error_call(7) });
 };
 
 var set_loc = function(location) {
-    Cookies.set("loc", location);  
+    Cookies.set("loc", location);
 };
 
 var navigation = function() {
-    /* DEBUGGING code for tweaking CSS */
-//    $(".title").click(function() {
-//       error_call(6);
-//    });
     set_loc("splash");
-    
+
     $(".sectionCard").click(function() {
         var section = $(this).attr('class').replace("sectionCard ","").replace(" noTouch", "");
         $(".splash").fadeOut(300);
-        if (section == "simpleSection") { 
+        if (section == "simpleSection") {
             $(".plainColours").delay(300).fadeIn(300);
             set_loc("plainColours");
         }
-        else if (section == "effectsSection") { 
+        else if (section == "effectsSection") {
             $(".effectsColours").delay(300).fadeIn(300);
             $("html").css("background-color", "#222");
             set_loc("effectsColours");
@@ -288,21 +269,19 @@ var navigation = function() {
         }
         $(".back").fadeIn(200);
     });
-    
+
     $(".navAllColours").click(function() {
         set_loc("allColours");
         $(".plainColours").fadeOut(300);
         $(".allColours").delay(300).fadeIn(300);
-        $(".allColourOpt").addClass("animate_colourSlideUp");
     });
-    
+
     $(".back").click(function() {
         $("html").css("background-color", "#3e3e3e");
         $("." + Cookies.get("loc")).fadeOut(300);
         if (Cookies.get("loc") == "allColours") {
             set_loc("plainColours");
-            $(".animate_slideColourUp").removeClass("animate_colourSlideUp");
-        } 
+        }
         else {
             set_loc("splash");
             $(".back").fadeOut(200);
@@ -319,30 +298,19 @@ var get_uid = function() {
             var obj = jQuery.parseJSON(data);
             oneTimeKey = obj.newID;
             Cookies.set("userKey", oneTimeKey);
-        });
+        }).fail(function () { error_call(7) });
 };
 
 var main = function() {
-    /* Add html elements and bind event listeners */
     get_uid();
     navigation();
     create_colours();
     effect_peek();
-    effects_intent();
     brightness_intent();
     detailed_colours();
-    colour_intent_binder();
+    colour_intent_binder(); // Relies on create_colours() having finished
     power_intent();
 
-
-//    $(".colourContainer").click(function () {
-//        $(".fullPageCover").fadeToggle(400);
-//        $(".detailedColours").fadeToggle(400);
-//    });
-//    $(".fullPageCover").click(function () {
-//        $(".detailedColours").fadeToggle(400);
-//        $(".fullPageCover").fadeToggle(400);
-//    });
 };
 
 $(document).ready(main);
