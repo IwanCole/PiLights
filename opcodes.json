@@ -48,8 +48,9 @@
 
     "fire": "x1",
     "water":"x2",
-    "tree": "x3",
-    "multi":"x4",
+    "forest": "x3",
+    "rainbow":"x4",
+    "colours":"x5",
 
     "getBright":"s1",
     "getColour":"s2",
