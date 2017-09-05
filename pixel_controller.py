@@ -50,7 +50,7 @@ def update_brightness(value):
 def set_pixels(hexColour):
     # Error handling: if for some reason UH fails, it doesn't crash everything
     # try:
-    (r, g, b) = efects.hex_rgb(hexColour)
+    (r, g, b) = effects.hex_rgb(hexColour)
     for i in range(24):
         (x, y) = conv_coords(i)
         uh.set_pixel(x, y, r, g, b)
@@ -68,7 +68,9 @@ def pixel_effect(value):
     elif value == "x3":
         effects.tree()
     elif value == "x4":
-        effects.rainbow()
+        effects.rainbow_swirl()
+    elif value == "x5":
+        effects.rainbow_hue()
     elif value == "START":
         effects.server_connected()
 

@@ -98,7 +98,7 @@ i.lock {
     height: 130px;
     background-size: cover;
     width: 100%;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
 }
 .simpleSectionImg {
     background-image: url('media/lights.jpg');
@@ -150,11 +150,20 @@ i.back {
     font-size: 28px;
     z-index: 2;
 }
+.lightBar {
+    width: 30px;
+    height: 2px;
+    display: inline-block;
+    margin-bottom: 7px;
+}
 .title {
     margin: 0px;
     font-size: 24px;
     font-weight: bold;
     display: inline-block;
+}
+.titleBar > .title {
+    margin: 0 7px 0 7px;
 }
 .title, .subTitle {
     color: #fff;
@@ -240,13 +249,7 @@ i.back {
 }
 .effectsContainer {
     width: 100%;
-/*    margin-top: 30px;*/
-/*    padding-left: 12.5%;*/
     display: block;
-/*    overflow-x: scroll;*/
-/*    overflow-y: hidden;*/
-/*    position: fixed;*/
-/*    white-space: nowrap;*/
 }
 .effectRing {
     width: 140px;
@@ -261,13 +264,12 @@ i.back {
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;         /* Opera/IE 8+ */
-/*    cursor: auto;*/
 }
-.ringFire { border-color: #c42323 }
-.ringWater { border-color: #1976D2; }
-.ringForest { border-color: #43A047; }
-.ringRainbow { border-color: #673AB7; }
-.ringColours { border-color: #9C27B0; }
+.ring_fire { border-color: #c42323 }
+.ring_water { border-color: #1976D2; }
+.ring_forest { border-color: #43A047; }
+.ring_rainbow { border-color: #673AB7; }
+.ring_colours { border-color: #9C27B0; }
 .effectRing > p.effectTitle {
     transition-duration: 300ms;
     margin: 0px;
@@ -300,28 +302,6 @@ i.back {
     background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.86) 82%, rgba(0,0,0,1) 100%);
     background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.86) 82%,rgba(0,0,0,1) 100%);
     background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.86) 72%,rgba(0,0,0,1) 100%);
-/*
-    overflow: auto;
-    border-radius: 8px;
-*/
-/*
-    width: 180px;
-    height: 180px;
-    margin-left: 10px;
-    margin-right: 10px;
-    display: inline-block;
-    margin-top: 20px;
-    border-radius: 8px;
-*/
-/*    transition-duration: 300ms;*/
-/*    max-height: 100px;*/
-/*
-    width: 75%;
-    margin-right: 6.25%;
-    height: 400px;
-    display: inline-block;
-    background-color: #222222;
-*/
 }
 .effectCard > .sectionTitle {
     font-size: 34px;
@@ -341,93 +321,8 @@ i.back {
 }
 i.startEffect {
     color: #fff;
-    font-size: 30px; 
+    font-size: 30px;
     padding-top: 8px;
-}
-
-
-
-.cardBase {
-/*    height: 54px;*/
-    min-height: 100px;
-/*    margin-top: -54px;*/
-    margin-top: -100px;
-    width: 100%;
-    opacity: 0.7;
-    transition-duration: 300ms;
-}
-.cardFire {
-    background-color: #410f06;
-}
-.cardWater {
-    background-color: #052839;
-}
-.cardForest {
-    background-color: #17340e;
-}
-.cardMulti {
-    background-color: #2e102f;
-}
-.effectImg {
-    display: block;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-/*    height: 180px;*/
-    min-height: 100px;
-    transition-duration: 300ms;
-/*    width: 180px;*/
-    width: 100%;
-}
-.imgFire {
-    background-image: url('media/fire.jpg');
-}
-.imgWater {
-    background-image: url('media/bubbles.jpg');
-}
-.imgForest {
-    background-image: url('media/forest.jpg');
-}
-.imgMulti {
-    background-image: url('media/multi.jpg');
-}
-
-/*
-    padding-top: 10px;
-    display: inline-block;
-    margin-top: -60px;
-    margin-right: 12px;
-    float: right;
-    position: relative;
-    color: #fff;
-    transition-duration: 300ms;
-    font-size: 36px;
-*/
-/*}*/
-.testtt {
-    /* Nothing */
-}
-.shunt_active {
-    transform: translateY(150px);
-    margin-top: 0px;
-}
-.effectCard_active {
-    min-height: 250px;
-}
-.effectCard_active > .cardBase {
-    max-height: 60px;
-    margin-top: -60px;
-}
-.effectCard_active > .effectImg {
-    min-height: 250px;
-}
-.effectCard_active > .sectionTitle {
-    margin-top: -100px;
-}
-.effectCard_active > i.startEffect {
-    margin-top: -100px;
-    padding-bottom: 10px;
-    transform: rotate(180deg);
 }
 .settingsCard {
     background-color: #222222;
@@ -486,30 +381,3 @@ i.toggleActive {
     -webkit-animation-iteration-count: 1;
     -webkit-animation-timing-function: ease-in-out;
 }
-
-/*
-.allColourOpt {
-    transform: translateY(300%);
-    transition-duration: 500ms;
-}
-*/
-
-/*
-@-webkit-keyframes colourSlideUp {
-    0% {
-        top: 800px;
-        margin-bottom: 30px;
-    }
-    100% {
-        top: 0px;
-        margin-bottom: 0px;
-    }
-}
-.animate_colourSlideUp {
-    -webkit-animation-name: colourSlideUp;
-    -webkit-animation-duration: 500ms;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-timing-function: ease-out;
-}
-*/
-

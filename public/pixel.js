@@ -53,18 +53,18 @@ var effect_reset = function() {
 };
 
 var effect_active = function(newEffect) {
-    update_colours("off");
-    $(".ring" + newEffect).addClass("ringActive");
+    update_colours(newEffect, 2);
+    $(".ring_" + newEffect).addClass("ringActive");
 };
 
-var effects_intent = function(effectSelected) {
+var effect_intent = function(effectSelected) {
     var effect = effectSelected.toLowerCase();
     $(".effectFAB").off("click"); // Unbind previous listener
     $(".effectFAB").click(function () {
         $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_effect", effect_type: effect },
             function(data, status){
                 var obj = jQuery.parseJSON(data);
-                if (obj.success == 1) { effect_active(effectSelected) }
+                if (obj.success == 1) { effect_active(effect) }
                 else { error_call(3) }
             }).fail(function () { error_call(7) });
         effect_reset();
@@ -79,7 +79,7 @@ var effect_peek = function() {
         $(".effectPreview").css("background-image", newImage);
         $(".effectPreview").slideDown();
         $(".effectCover").fadeIn();
-        effects_intent(effect);
+        effect_intent(effect);
     });
     $(".effectCover").click(function() {
         effect_reset();
@@ -99,7 +99,7 @@ var detailed_intent = function() {
             function(data, status){
                 var obj = jQuery.parseJSON(data);
                 console.log(obj.success);
-                if (obj.success == 1) { update_colours(obj.colour) }
+                if (obj.success == 1) { update_colours(obj.colour, 1) }
                 else { error_call(1) }
             }).fail(function () { error_call(7) });
         colour_reset();
@@ -134,21 +134,29 @@ var detailed_colours = function() {
     });
 };
 
-var update_colours = function(colour) {
+// Function made by Erick Petrucelli on stackoverflow :)
+var parse_rgb = function(rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    function hex(x) { return ("0" + parseInt(x).toString(16)).slice(-2) }
+    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+};
+
+var white_or_black = function(colour) {
+    var r = parseInt(colour.substring(1,3), 16);
+    var g = parseInt(colour.substring(3,5), 16);
+    var b = parseInt(colour.substring(5,7), 16);
+    if ((r*0.299 + g*0.587 + b*0.114) > 186) { return "#000000" }
+    else { return "#ffffff" }
+};
+
+var update_colours = function(colour, type) {
     $(".ringActive").removeClass("ringActive");
-    $('meta[name=theme-color]').remove();
     if (colour != "off") {
-        var newClassName = "titleBar noTouch " + colour;
-        var $temp = $('<span class="' + colour + '"></span>"').hide().appendTo("body");
-        var hexVal = $temp.css("background-color");
-        $temp.remove();
-        $('head').append('<meta name="theme-color" content="' + hexVal + '">');
+        if (type == 2) { colour = "lightBar_" + colour }
+        var newClassName = "lightBar " + colour;
     }
-    else {
-        var newClassName = "titleBar noTouch";
-        $('head').append('<meta name="theme-color" content="#2a2a2a">');
-    }
-    $(".titleBar").attr('class', newClassName);
+    else { var newClassName = "lightBar" }
+    $(".lightBar").attr('class', newClassName);
 };
 
 var colour_intent = function(colourRequest) {
@@ -156,7 +164,7 @@ var colour_intent = function(colourRequest) {
         function(data, status){
             var obj = jQuery.parseJSON(data);
             console.log(obj.success);
-            if (obj.success == 1) { update_colours(obj.colour) }
+            if (obj.success == 1) { update_colours(obj.colour, 1) }
             else { error_call(1) }
         }).fail(function () { error_call(7) });
 };
@@ -177,7 +185,7 @@ var power_intent = function() {
         $.post("", { id: Cookies.get("userKey"), server_key: Cookies.get("serverKey"), type: "intent_off"},
             function(data, status){
                 var obj = jQuery.parseJSON(data);
-                if (obj.success == 1) { update_colours("off") }
+                if (obj.success == 1) { update_colours("off", 1) }
                 else { error_call(2) }
             }).fail(function () { error_call(7) });
     });

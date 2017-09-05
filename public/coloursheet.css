@@ -163,3 +163,24 @@
 .or4 {
     background-color: #ff2200;
 }
+/* Effects background for the light bars */
+.lightBar_fire {    
+    background: -moz-linear-gradient(left, #ffea32 0%, #ff8930 21%, #ff0000 50%, #ff8930 81%, #feea32 100%);
+    background: -webkit-linear-gradient(left, #ffea32 0%,#ff8930 21%,#ff0000 50%,#ff8930 81%,#feea32 100%);
+    background: linear-gradient(to right, #ffea32 0%,#ff8930 21%,#ff0000 50%,#ff8930 81%,#feea32 100%);
+}
+.lightBar_water {
+    background: -moz-linear-gradient(left, #32c8ff 0%, #3037ff 22%, #00f6ff 50%, #071cff 67%, #1e9dff 100%);
+    background: -webkit-linear-gradient(left, #32c8ff 0%,#3037ff 22%,#00f6ff 50%,#071cff 67%,#1e9dff 100%);
+    background: linear-gradient(to right, #32c8ff 0%,#3037ff 22%,#00f6ff 50%,#071cff 67%,#1e9dff 100%);
+}
+.lightBar_forest {
+    background: -moz-linear-gradient(left, #72db2b 0%, #187f1d 22%, #00ff0c 50%, #04a030 67%, #52ce6f 100%);
+    background: -webkit-linear-gradient(left, #72db2b 0%,#187f1d 22%,#00ff0c 50%,#04a030 67%,#52ce6f 100%);
+    background: linear-gradient(to right, #72db2b 0%,#187f1d 22%,#00ff0c 50%,#04a030 67%,#52ce6f 100%);
+}
+.lightBar_colours, .lightBar_rainbow {
+    background: -moz-linear-gradient(left, #ff0000 0%, #ffff30 24%, #30ff48 43%, #30c7ff 59%, #0c20ff 74%, #ff00c3 100%);
+    background: -webkit-linear-gradient(left, #ff0000 0%,#ffff30 24%,#30ff48 43%,#30c7ff 59%,#0c20ff 74%,#ff00c3 100%);
+    background: linear-gradient(to right, #ff0000 0%,#ffff30 24%,#30ff48 43%,#30c7ff 59%,#0c20ff 74%,#ff00c3 100%);
+}
