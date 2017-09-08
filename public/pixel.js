@@ -263,15 +263,16 @@ var navigation = function() {
         $(".splash").fadeOut(300);
         if (section == "simpleSection") {
             $(".plainColours").delay(300).fadeIn(300);
+            $("html").css("background-color", "#3e3e3e");
             set_loc("plainColours");
         }
         else if (section == "effectsSection") {
             $(".effectsColours").delay(300).fadeIn(300);
-            $("html").css("background-color", "#222");
             set_loc("effectsColours");
         }
         else if (section == "settingSection") {
             $(".settings").delay(300).fadeIn();
+            $("html").css("background-color", "#3e3e3e");
             set_loc("settings");
             get_brightness();
         }
@@ -285,7 +286,7 @@ var navigation = function() {
     });
 
     $(".back").click(function() {
-        $("html").css("background-color", "#3e3e3e");
+        $("html").css("background-color", "#222");
         $("." + Cookies.get("loc")).fadeOut(300);
         if (Cookies.get("loc") == "allColours") {
             set_loc("plainColours");

@@ -1,6 +1,6 @@
 html {
     font-family: 'Roboto', sans-serif;
-    background-color: #3e3e3e;
+    background-color: #222;
     transition-duration: 0.4s;
 }
 /*~~~~~~ ALL FONT FAMILIES HERE ~~~~~~*/
@@ -64,7 +64,6 @@ i.lock {
 }
 .content {
     display: none;
-/*    background-color: #3e3e3e;*/
     padding-bottom: 58px;
 }
 .splash {
@@ -78,49 +77,33 @@ i.lock {
 .sectionCard {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 30px;
-    border-radius: 8px;
-    width: 90%;
+    margin-top: 20px;
+    border-width: 3px;
+    border-style: solid;
+    border-radius: 160px;
+    padding-top: 50px;
+    box-sizing: border-box;
+    width: 200px;
+    height: 200px;
     display: block;
     overflow: auto;
 }
 .simpleSection {
-    background-color: #2a2222;
+    border-color: #a329ff;
 }
 .effectsSection {
-    background-color: #22222a;
+    border-color: #ff1d1d;
 }
 .settingSection {
-    background-color: #222222;
+    border-color: #0060ef;
     margin-bottom: 30px;
 }
-.sectionImg {
-    height: 130px;
-    background-size: cover;
-    width: 100%;
-    background-repeat: no-repeat;
-}
-.simpleSectionImg {
-    background-image: url('media/lights.jpg');
-    background-position: bottom;
-}
-.effectsSectionImg {
-    background-image: url('media/under.jpg');
-    background-position: bottom;
-}
-.settingSectionImg {
-    background-image: url('media/settings.jpg');
-    background-position: bottom;
-}
+i.sectionIcon, .sectionTitle { color: #d4d4d4; }
+i.sectionIcon { font-size: 50px; }
 .sectionTitle {
-    margin-top: -45px;
-    color: #fff;
-    text-align: left;
-    padding-left: 5%;
-}
-.sectionDescription {
-    margin: 15px;
-    color: #fff;
+    margin: 15px 0 0 0;
+    font-weight: 200;
+    font-size: 26px;
 }
 .titleBar, i.back {
     display: block;
