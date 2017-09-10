@@ -2,10 +2,8 @@ import unicornhat as uh
 import random, time
 
 def conv_coords( i ):
-    if i < 0:
-        return conv_coords(24 + i)
-    elif i >= 24:
-        return conv_coords(i - 24)
+    if i < 0 or i >= 24:
+        return conv_coords(i % 24)
     elif i in range(8):
         return (0, i)
     elif i >= 16:
@@ -14,13 +12,14 @@ def conv_coords( i ):
         return (1, 7-(i%8))
 
 
+# Convert HEX -> rbg e.g FFFFFF -> 255,255,255
 def hex_rgb(hexColour):
     r = int(hexColour[0:2], 16)
     g = int(hexColour[2:4], 16)
     b = int(hexColour[4:6], 16)
     return (r, g, b)
 
-
+# Convert rgb -> HEX
 def rgb_hex(r, g, b):
     preHex = [hex(r).replace("0x",""), hex(g).replace("0x",""), hex(b).replace("0x","")]
     outHex = ""
@@ -61,7 +60,7 @@ def rainbow_hue():
         time.sleep(0.03)
 
 
-def rainbow():
+def rainbow_swirl():
     r, g, b = 255, 0, 0
     inc, offset = 0, 0
     while True:
@@ -98,6 +97,7 @@ def fire():
         uh.show()
         time.sleep(random.uniform(0.01, 0.02))
 
+
 def water():
     while True:
         for i in range(24):
@@ -125,7 +125,6 @@ def tree():
         uh.set_pixel(x, y, r, g, b)
         uh.show()
         time.sleep(0.01)
-
     while True:
         for i in range(24):
             (x, y) = conv_coords(i)
@@ -136,6 +135,34 @@ def tree():
             uh.set_pixel(x, y, r, g, b)
         uh.show()
         time.sleep(0.07)
+
+
+def sunrise(speed):
+    if speed == 0: tick = 1.31
+    else: tick = 0.02
+    uh.brightness(1)
+    bright = 0.1
+    def sunrise_helper(steps, bri, r, g, b, extra):
+        for i in range(steps):
+            for j in range(12):
+                (x1, y1) = conv_coords(j)
+                (x2, y2) = conv_coords(23-j)
+                uh.set_pixel(x1, y1, int(r*bri), int(g*bri), int(b*bri))
+                uh.set_pixel(x2, y2, int(r*bri), int(g*bri), int(b*bri))
+                uh.show()
+                time.sleep(tick)
+            if extra:
+                g += 8
+                if g == 256: g = 255
+                if g >= 176: b += 6
+                if i in set(range(32)) - set(range(20)): bri += 0.05
+            else: bri += 0.05
+
+    sunrise_helper(3,  0.1,  50,  50, 255, False)
+    sunrise_helper(3,  0.25, 10,  10, 255, False)
+    sunrise_helper(32, 0.4,  255, 0,  0,   True)
+    time.sleep(600)
+    uh.off()
 
 
 def main():
