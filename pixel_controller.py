@@ -59,18 +59,14 @@ def set_pixels(hexColour):
 
 
 def pixel_effect(value):
-    if value == "x1":
-        effects.fire()
-    elif value == "x2":
-        effects.water()
-    elif value == "x3":
-        effects.tree()
-    elif value == "x4":
-        effects.rainbow_swirl()
-    elif value == "x5":
-        effects.rainbow_hue()
-    elif value == "START":
-        effects.server_connected()
+    if value == "x1": effects.fire()
+    elif value == "x2": effects.water()
+    elif value == "x3": effects.tree()
+    elif value == "x4": effects.rainbow_swirl()
+    elif value == "x5": effects.rainbow_hue()
+    elif value == "x60": effects.sunrise(0)
+    elif value == "x61": effects.sunrise(1)
+    elif value == "START": effects.server_connected()
 
 
 # Listen for requests coming from the pixel_handler (from node)
