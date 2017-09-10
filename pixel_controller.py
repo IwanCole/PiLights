@@ -5,10 +5,8 @@ import sys, time, zmq, json, effects
 
 # Convert co-ords to work with a 1*24 ring instead of a 8*8 matrix of LEDs
 def conv_coords( i ):
-    if i < 0:
-        return conv_coords(24 + i)
-    elif i >= 24:
-        return conv_coords(i - 24)
+    if i < 0 or i >= 24:
+        return conv_coords(i % 24)
     elif i in range(8):
         return (0, i)
     elif i >= 16:
