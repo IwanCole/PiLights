@@ -38,7 +38,12 @@
                     <i class="material-icons sectionIcon ">whatshot</i>
                     <h1 class="sectionTitle">Effects</h1>
                 </div>
-
+                
+                <div class="sectionCard alarmSection">
+                    <i class="material-icons sectionIcon">alarm</i>
+                    <h1 class="sectionTitle">Alarm</h1>
+                </div>
+                
                 <div class="sectionCard settingSection">
                     <i class="material-icons sectionIcon">settings</i>
                     <h1 class="sectionTitle">Settings</h1>
@@ -96,6 +101,65 @@
                 </div>
             </div>
 
+            <div class="alarms">
+                <p class="subTitle">Set sunrise alarms here</p>
+                
+                
+                <div class="fullPageCover alarmCover"><span></span></div>
+                <div class="newAlarm">
+                    <form>
+                        <p class="subTitle">Time</p>
+                        <input class="timeInput" type="time" name="usr_time">
+                        <div class="dayContainer">
+                            <p class="dayLabel">M</p>
+                            <p class="dayLabel">T</p>
+                            <p class="dayLabel">W</p>
+                            <p class="dayLabel">T</p>
+                            <p class="dayLabel">F</p>
+                            <p class="dayLabel">S</p>
+                            <p class="dayLabel">S</p>
+                        </div>
+                        <div class="checkContainer">
+                            <div class="checkbox">
+                                <input id="d0" type="checkbox">
+                                <label for="d0"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d1" type="checkbox">
+                                <label for="d1"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d2" type="checkbox">
+                                <label for="d2"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d3" type="checkbox">
+                                <label for="d3"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d4" type="checkbox">
+                                <label for="d4"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d5" type="checkbox">
+                                <label for="d5"></label>
+                            </div>
+                            <div class="checkbox">
+                                <input id="d6" type="checkbox">
+                                <label for="d6"></label>
+                            </div>
+                        </div> <!-- END of checkContainer-->
+                    </form>
+                    <p class="subTitle alarmCoverTitle">Cancel</p>
+                    
+                </div>
+                <div class="alarmFAB">
+                    <span class="alarmBar1"></span>
+                    <span class="alarmBar2"></span>
+                </div>
+                
+            </div>
+            
             <div class="settings">
                 <p class="subTitle">Change NeoPixel settings here</p>
 

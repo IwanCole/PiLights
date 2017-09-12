@@ -217,6 +217,25 @@ var passcode_intent = function() {
     }
 };
 
+var alarm_add_view = function() {
+    $(".alarmFAB > span").toggleClass("active");
+    $(".alarmCover").fadeToggle(300);
+    $(".newAlarm").fadeToggle(300);
+    $(".alarmCoverTitle").fadeToggle(300);
+};
+
+var alarm_handlers = function() {
+    $(".alarmFAB").click(function() {
+        // IF on add mode then show add alarm
+        // Else if on tick mode SAVE alarm
+        alarm_add_view();
+    });
+    $(".alarmCover, .alarmCoverTitle").click(function() {
+        alarm_add_view();
+    });
+};
+
+
 var update_brightness = function(level) {
     $(".brightnessToggle").removeClass("toggleActive");
     if (level == "0.3") {
@@ -270,6 +289,10 @@ var navigation = function() {
             $(".effectsColours").delay(300).fadeIn(300);
             set_loc("effectsColours");
         }
+        else if (section == "alarmSection") {
+            $(".alarms").delay(300).fadeIn(300);
+            set_loc("alarms");
+        }
         else if (section == "settingSection") {
             $(".settings").delay(300).fadeIn();
             $("html").css("background-color", "#3e3e3e");
@@ -315,6 +338,7 @@ var main = function() {
     navigation();
     create_colours();
     effect_peek();
+    alarm_handlers();
     brightness_intent();
     detailed_colours();
     colour_intent_binder(); // Relies on create_colours() having finished
