@@ -90,8 +90,11 @@ var server_session = function() {
 
 // I know this isn't secure but the only reason I have a weak passcode
 // is to stop flatmates on the same wifi from having access
+// Set the passcode here.
 var valid_pass = function(user) {
-    if (user == "6d492170753211fcde587882d77e1e8dcce1bc27") { return true; }
+    var shasum = crypto.createHash('sha1');
+    shasum.update("1234");
+    if (user == shasum.digest('hex')) { return true; }
     else { return false; }
 };
 
