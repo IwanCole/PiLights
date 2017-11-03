@@ -15,14 +15,6 @@ The entire web interface is stored within one html file, and navigation is done 
 
 Errors are handled by blocking the user from further interaction, and prompting them with potential solutions. Authentication errors, non responding server, and bad data errors are handled.
 
-Home Page UI
-<img src="https://github.com/IwanCole/PiLights/blob/master/readme_images/home.png" width="250">
+Home Page UI, Server Down Error, and Expired Authentication Error
 
-![Server Down Error](https://github.com/IwanCole/PiLights/blob/master/readme_images/error1.png)
-
-![Expired Auth Error](https://github.com/IwanCole/PiLights/blob/master/readme_images/error2.png)
-
-
-Solid Colours, Effects and Sunrise Alarms
-------
-
+<img src="https://github.com/IwanCole/PiLights/blob/master/readme_images/home.png" width="250"> <img src="https://github.com/IwanCole/PiLights/blob/master/readme_images/error1.png" width="250"><img src="https://github.com/IwanCole/PiLights/blob/master/readme_images/error2.png" width="250">
