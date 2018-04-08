@@ -126,20 +126,18 @@ var server_sweep = function() {
 var validate_request = function(body) {
     keys = Object.keys(body);
     if (keys.length < 1 || keys.length > 5) { return false }
-    var acceptedKeys = ['colour', 'effect_type', 'id', 'level', 'passcode', 'server_key', 'type'];
-    // At most O(7n) runtime as accepted keys is fixed
+    var acceptedKeys = {'colour':1, 'effect_type':1, 'id':1, 'level':1, 'passcode':1, 'server_key':1, 'type':1, 'time':1, 'days':1};
+    var acceptedTypes = {'get_uid':1, 'get_brightness':1, 'intent_auth':1, 'intent_colour':1, 'intent_effect':1, 'intent_bright':1, 'intent_off':1, 'intent_alarm_new':1, 'intent_alarm_del':1};
+
+    // Doesn't validate time/date input data yet
     for (var i = 0; i < keys.length; i++) {
         var userKey = keys[i];
-        var inList = false;
-        for (var j = 0; j < acceptedKeys.length; j++) {
-            inList = inList | (userKey == acceptedKeys[j]);
+        if (acceptedKeys[userKey] == undefined) { return false }
+        if (body[userKey] == undefined || body[userKey] == "") { return false }
+        if (userKey == "type" && acceptedTypes[body[userKey]] == undefined) { return false }
+        if (userKey == "colour" || userKey == "effect_type" || userKey == "level") {
+            if (opcodes[body[userKey]] == undefined) { return false }
         }
-        if (!inList) { return false }
-        if (userKey == "id" || userKey == "server_key" || userKey == "passcode") {
-            if (body[userKey] == undefined) { return false }
-        }
-        var acceptedKeyPairs = {'get_uid':1, 'get_brightness':1, 'intent_auth':1, 'intent_colour':1, 'intent_effect':1, 'intent_bright':1, 'intent-off':1};
-        if (opcodes[body[userKey]] == undefined && body[userKey] == undefined) { return false }
     }
     return true;
 };
@@ -246,6 +244,7 @@ app.post('/', function (req, res) {
     }
     else {
         var response = '{"type":"server","success":"false"}';
+        write_log("[SERVR] BAD DATA: FAILED VALIDATION");
     }
     res.send(response);
 })
