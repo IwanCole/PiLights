@@ -26,6 +26,9 @@
 .orange {
     background-color: #FF9100;
 }
+.white {
+    background-color: #FFFFFF;
+}
 /* Actual Colours for above in detailed panel */
 .detailedColours > .red, .allColours > .red {
     background-color: #ff0000;
@@ -163,8 +166,20 @@
 .or4 {
     background-color: #ff2200;
 }
+.w1 {
+    background-color: #ffffdd;
+}
+.w2 {
+    background-color: #ffdddd;
+}
+.w3 {
+    background-color: #ddffdd;
+}
+.w4 {
+    background-color: #ddddff;
+}
 /* Effects background for the light bars */
-.lightBar_fire {    
+.lightBar_fire {
     background: -moz-linear-gradient(left, #ffea32 0%, #ff8930 21%, #ff0000 50%, #ff8930 81%, #feea32 100%);
     background: -webkit-linear-gradient(left, #ffea32 0%,#ff8930 21%,#ff0000 50%,#ff8930 81%,#feea32 100%);
     background: linear-gradient(to right, #ffea32 0%,#ff8930 21%,#ff0000 50%,#ff8930 81%,#feea32 100%);

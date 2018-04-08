@@ -46,6 +46,12 @@
     "or4":"ff2200",
     "off":"000000",
 
+    "w1":"ffdddd",
+    "w2":"ddffdd",
+    "white":"ffffff",
+    "w3":"ddddff",
+    "w4":"ffffdd",
+
     "fire": "x1",
     "water":"x2",
     "forest": "x3",
